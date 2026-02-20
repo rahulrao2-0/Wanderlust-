@@ -1,0 +1,306 @@
+/* ── Fonts ───────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+
+/* ── Variables ───────────────────────────────────────────────────────────────── */
+:root {
+  --bg:          #f7f7f5;
+  --surface:     #ffffff;
+  --border:      #e4e4e0;
+  --border-focus:#a0a09a;
+  --text-primary:#1a1a18;
+  --text-muted:  #6b6b65;
+  --accent:      #2d6a4f;        /* muted forest green — understated, modern   */
+  --accent-light:#eaf3ee;
+  --danger:      #c0392b;
+  --radius:      10px;
+  --shadow:      0 2px 16px rgba(0,0,0,0.07);
+  --transition:  0.18s ease;
+}
+
+/* ── Page wrapper ────────────────────────────────────────────────────────────── */
+.add-listing-wrapper {
+  background: var(--bg);
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Paper card ──────────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiPaper-root {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+/* ── Page title ──────────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiTypography-h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px !important;
+}
+
+/* ── Section headings ────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiTypography-h6 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiDivider-root {
+  border-color: var(--border) !important;
+}
+
+/* ── ALL text inputs & selects: consistent height and style ──────────────────── */
+.add-listing-wrapper .MuiOutlinedInput-root {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  border-radius: var(--radius) !important;
+  background: #fafaf9;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+.add-listing-wrapper .MuiOutlinedInput-root:hover {
+  background: #f5f5f2;
+}
+
+.add-listing-wrapper .MuiOutlinedInput-root.Mui-focused {
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+}
+
+/* Border color */
+.add-listing-wrapper .MuiOutlinedInput-notchedOutline {
+  border-color: var(--border) !important;
+  transition: border-color var(--transition);
+}
+
+.add-listing-wrapper .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--border-focus) !important;
+}
+
+.add-listing-wrapper .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--accent) !important;
+  border-width: 1.5px !important;
+}
+
+/* Label color */
+.add-listing-wrapper .MuiInputLabel-root {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.add-listing-wrapper .MuiInputLabel-root.Mui-focused {
+  color: var(--accent) !important;
+}
+
+/* Input text */
+.add-listing-wrapper .MuiInputBase-input {
+  color: var(--text-primary);
+  padding: 13px 14px;
+}
+
+/* Multiline textarea */
+.add-listing-wrapper .MuiInputBase-inputMultiline {
+  padding: 0;
+  line-height: 1.65;
+}
+
+/* ── Image upload area ───────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiTypography-subtitle2 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px !important;
+}
+
+/* Dashed upload button */
+.add-listing-wrapper .upload-btn {
+  border: 1.5px dashed var(--border-focus) !important;
+  border-radius: var(--radius) !important;
+  background: #fafaf9 !important;
+  color: var(--text-muted) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.88rem !important;
+  height: 90px;
+  width: 100%;
+  transition: background var(--transition), border-color var(--transition) !important;
+  text-transform: none !important;
+}
+
+.add-listing-wrapper .upload-btn:hover {
+  background: var(--accent-light) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Image preview box */
+.add-listing-wrapper .preview-img {
+  width: 100%;
+  max-width: 420px;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: block;
+}
+
+/* Change / Remove buttons under preview */
+.add-listing-wrapper .preview-actions .MuiButton-outlined {
+  font-size: 0.78rem !important;
+  padding: 4px 12px !important;
+  border-radius: 6px !important;
+  text-transform: none !important;
+  font-family: 'DM Sans', sans-serif !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+
+.add-listing-wrapper .preview-actions .MuiButton-outlined:hover {
+  background: #f5f5f2 !important;
+}
+
+.add-listing-wrapper .preview-actions .MuiButton-outlinedError {
+  border-color: #f5c6c2 !important;
+  color: var(--danger) !important;
+}
+
+.add-listing-wrapper .preview-actions .MuiButton-outlinedError:hover {
+  background: #fdf2f1 !important;
+}
+
+/* ── Amenity chips ────────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiChip-root {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.82rem !important;
+  border-radius: 8px !important;
+  height: 32px !important;
+  transition: all var(--transition) !important;
+  cursor: pointer;
+}
+
+.add-listing-wrapper .MuiChip-outlined {
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+  background: #fafaf9 !important;
+}
+
+.add-listing-wrapper .MuiChip-outlined:hover {
+  background: var(--accent-light) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+.add-listing-wrapper .MuiChip-filled.MuiChip-colorPrimary {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* ── Checkboxes ──────────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiCheckbox-root {
+  color: var(--border-focus) !important;
+  padding: 6px 8px !important;
+}
+
+.add-listing-wrapper .MuiCheckbox-root.Mui-checked {
+  color: var(--accent) !important;
+}
+
+.add-listing-wrapper .MuiFormControlLabel-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* ── Alert messages ──────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiAlert-root {
+  border-radius: var(--radius) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.88rem !important;
+}
+
+/* ── Submit / Cancel buttons ─────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiButton-contained {
+  background: var(--accent) !important;
+  color: #fff !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  padding: 10px 28px !important;
+  border-radius: var(--radius) !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em;
+  transition: background var(--transition), transform var(--transition) !important;
+}
+
+.add-listing-wrapper .MuiButton-contained:hover {
+  background: #245a41 !important;
+  transform: translateY(-1px);
+}
+
+.add-listing-wrapper .MuiButton-contained:disabled {
+  background: #b0b0aa !important;
+  transform: none;
+}
+
+.add-listing-wrapper .MuiButton-outlined:not(.preview-actions .MuiButton-outlined) {
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  padding: 10px 24px !important;
+  border-radius: var(--radius) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  transition: background var(--transition) !important;
+}
+
+.add-listing-wrapper .MuiButton-outlined:not(.preview-actions .MuiButton-outlined):hover {
+  background: #f0f0ed !important;
+  border-color: var(--border-focus) !important;
+}
+
+/* ── Select dropdown ─────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiSelect-icon {
+  color: var(--text-muted);
+}
+
+/* ── Caption text ────────────────────────────────────────────────────────────── */
+.add-listing-wrapper .MuiTypography-caption {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .add-listing-wrapper .MuiPaper-root {
+    padding: 20px !important;
+    border-radius: 12px !important;
+  }
+
+  .add-listing-wrapper .MuiTypography-h4 {
+    font-size: 1.6rem;
+  }
+
+  /* Stack submit buttons full width on mobile */
+  .add-listing-wrapper .MuiStack-root:last-of-type {
+    flex-direction: column !important;
+  }
+
+  .add-listing-wrapper .MuiStack-root:last-of-type .MuiButton-root {
+    width: 100% !important;
+  }
+}

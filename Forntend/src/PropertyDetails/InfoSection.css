@@ -1,0 +1,169 @@
+.infoContainer {
+  display: flex;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+  align-items: flex-start;
+}
+
+/* ── Left: Description ───────────────────────────────────────────────────── */
+.descriptionDiv {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.descriptionDiv hr {
+  border: none;
+  border-top: 1px solid #ffffff;
+  margin: 0;
+}
+
+/* Host */
+.hostName {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hostName span {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Hotel Details */
+.hotelDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hotelDetails span {
+  background: #f5f5f5;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+/* Description */
+.description p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #555;
+  margin: 0;
+}
+
+/* Amenities */
+.amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.amenities p {
+  width: 100%;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 4px;
+  color: #222;
+}
+
+.amenities span {
+  background: #fff3f3;
+  border: 1px solid #ffcdd2;
+  color: #c0392b;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+}
+
+/* Hotel Rules */
+.hotelRules {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hotelRules p {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 4px;
+  color: #222;
+}
+
+.hotelRules span {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* ── Right: Reservation Card ─────────────────────────────────────────────── */
+.check-inDiv {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 100px;
+}
+
+.reservationDiv {
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.price span {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.reservationDiv label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: -8px;
+}
+
+.check-In,
+.check-out {
+  width: 100%;
+}
+
+/* Make MUI DatePicker full width */
+.check-In .MuiFormControl-root,
+.check-out .MuiFormControl-root {
+  width: 100%;
+}
+
+.guests .MuiFormControl-root {
+  margin: 0 !important;
+  width: 100%;
+}
+
+.reserveButton {
+  width: 100% !important;
+  padding: 10px 0 !important;
+  font-size: 1rem !important;
+  border-radius: 10px !important;
+  margin-top: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .infoContainer {
+    flex-direction: column;
+  }
+
+  .check-inDiv {
+    width: 100%;
+    position: static;
+  }
+}

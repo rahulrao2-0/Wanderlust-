@@ -1,0 +1,64 @@
+/* components/GuestReviews/GuestReviews.css */
+.guest-reviews-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.reviews-image-section {
+  height: 180px;
+  overflow: hidden;
+}
+
+.reviews-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reviews-content {
+  padding: 24px !important;
+}
+
+.reviews-title {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.review-quote {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.review-text {
+  color: #6c757d;
+  margin-bottom: 16px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.review-text em {
+  font-style: italic;
+  color: #495057;
+}
+
+.read-reviews-btn {
+  background-color: #4a5bdc;
+  color: white;
+  text-transform: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.read-reviews-btn:hover {
+  background-color: #3845b8;
+  box-shadow: 0 4px 12px rgba(74, 91, 220, 0.3);
+}

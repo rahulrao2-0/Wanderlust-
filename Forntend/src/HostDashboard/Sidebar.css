@@ -1,0 +1,73 @@
+/* components/Sidebar/Sidebar.css */
+.sidebar {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 8px 0;
+  position: sticky;
+  top: 20px;
+}
+
+.sidebar-list {
+  padding: 0;
+}
+
+.sidebar-item {
+  padding: 12px 20px;
+  margin: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-item:hover {
+  background-color: #e9ecef;
+}
+
+.sidebar-item.active {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-item.active .sidebar-icon {
+  color: #ff385c;
+}
+
+.sidebar-icon {
+  min-width: 40px;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.sidebar-text .MuiListItemText-primary {
+  font-size: 15px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.sidebar-item.active .sidebar-text .MuiListItemText-primary {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Airbnb logo style for first item */
+.sidebar-item:first-child.active .sidebar-icon {
+  color: #ff385c;
+}
+
+@media (max-width: 960px) {
+  .sidebar {
+    position: relative;
+    top: 0;
+  }
+  
+  .sidebar-list {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 8px;
+  }
+  
+  .sidebar-item {
+    min-width: fit-content;
+    white-space: nowrap;
+  }
+}

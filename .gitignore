@@ -1,0 +1,15 @@
+# Backend
+Backend/node_modules/
+Backend/.env
+Backend/uploads/
+
+# Frontend
+Forntend/node_modules/
+Forntend/dist/
+Forntend/.env
+
+# General
+node_modules/
+.env
+.DS_Store
+*.log

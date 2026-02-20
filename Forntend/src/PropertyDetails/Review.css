@@ -1,0 +1,175 @@
+.reviewCard {
+    max-width: 500px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reviewCard:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.reviewHeader {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.reviewAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.reviewUserInfo {
+    flex: 1;
+}
+
+.reviewUserName {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+}
+
+.reviewRating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.reviewRating svg {
+    width: 16px;
+    height: 16px;
+}
+
+.reviewComment {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #555555;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+.reviewFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f5f5f5;
+    font-size: 0.8rem;
+    color: #999999;
+}
+
+.reviewDate {
+    margin: 0;
+    font-weight: 500;
+}
+
+.reviewActions {
+    display: flex;
+    gap: 8px;
+}
+
+.reviewActionBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999999;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.reviewActionBtn:hover {
+    background: #f5f5f5;
+    color: #e74c3c;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .reviewCard {
+        max-width: 100%;
+        padding: 14px;
+    }
+
+    .reviewHeader {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .reviewAvatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+
+    .reviewUserName {
+        font-size: 0.9rem;
+    }
+
+    .reviewComment {
+        font-size: 0.85rem;
+    }
+
+    .reviewFooter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .reviewActions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 400px) {
+    .reviewCard {
+        padding: 12px;
+    }
+
+    .reviewHeader {
+        gap: 8px;
+    }
+
+    .reviewAvatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+    .reviewUserName {
+        font-size: 0.85rem;
+    }
+
+    .reviewComment {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .reviewActionBtn {
+        padding: 2px 6px;
+        font-size: 0.75rem;
+    }
+}

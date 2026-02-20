@@ -1,0 +1,227 @@
+
+import dotenv from "dotenv";
+dotenv.config();
+
+
+import express        from "express";
+import cors           from "cors";
+import cookieParser   from "cookie-parser";
+import mongoose       from "mongoose";
+import multer         from "multer";
+import fs             from "fs";
+import { v2 as cloudinary } from "cloudinary";
+
+import authRoutes     from "./routes/auth.js";
+import listingRoutes  from "./routes/listing.js";
+import bookingRoutes  from "./routes/booking.js";
+import hostRoutes     from "./routes/host.js";
+import { authMiddleware } from "./middleware/authValidate.js";
+import User           from "./models/user.js";
+import Host           from "./models/host.js";
+import Listing        from "./models/listing.js";
+
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
+import mbxTilesets from "@mapbox/mapbox-sdk/services/tilesets.js";
+import mapboxSdk from "@mapbox/mapbox-sdk";
+import ExpressError from "./ExpressError.js";
+const mapboxClient = mapboxSdk({
+  accessToken: process.env.MAP_TOKEN,
+});
+
+const geocodingClient = mbxGeocoding(mapboxClient);
+cloudinary.config({
+  cloud_name : process.env.CLOUD_NAME,
+  api_key    : process.env.CLOUD_API_KEY,
+  api_secret : process.env.CLOUD_API_SECRET,
+});
+
+
+const upload = multer({ dest: "uploads/" });
+
+const app = express();
+
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+
+mongoose
+  .connect("mongodb://127.0.0.1:27017/wanderlustReact")
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
+
+
+app.get("/me", authMiddleware, async (req, res) => {
+  const user = await User.findById(req.user.id).select(
+    "_id name email role isVerified"
+  );
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  const host = await Host.findOne({ user: req.user.id });
+  res.json({ user, isHost: !!host, host: host || null });
+});
+
+app.get("/api/search", async (req, res,next) => {
+  const {query} = req.query;
+  console.log(query)
+
+  const results = await Listing.find({
+    $or: [
+      { location: { $regex: query, $options: "i" } },
+      { title: { $regex: query, $options: "i" } },
+      { description: { $regex: query, $options: "i" } },
+    ],
+  });
+
+  console.log("Search results:", results);
+  if(results.length === 0){ 
+    next(new ExpressError(404, "No listings found matching your search"));
+  }
+  res.json({ results });
+})
+
+app.post(
+  "/api/addListing",
+  authMiddleware,
+  upload.single("image"),           
+  async (req, res) => {
+    const response= await geocodingClient.forwardGeocode({
+     query: `${req.body.location},${req.body.country}`,
+     limit: 2
+     })
+     .send()
+     
+     console.log("Geocoding response:", response.body.features[1].geometry);
+    try {
+      console.log("Body :", req.body);
+      console.log("File :", req.file);
+
+      
+      if (!req.file) {
+        return res.status(400).json({ error: "Image file is required" });
+      }
+
+      
+      const { title, description, price, location, country,
+              host, hotelDetails, amenities, hotelRules } = req.body;
+
+      if (!title || !description || !price || !location || !country ||
+          !host  || !hotelDetails || !hotelRules) {
+        
+        fs.unlink(req.file.path, () => {});
+        return res.status(400).json({ error: "Please fill in all required fields" });
+      }
+
+      
+      const cloudResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: "listings",
+        transformation: [{ width: 1200, height: 800, crop: "limit", quality: "auto" }],
+      });
+
+      
+      fs.unlink(req.file.path, () => {});
+
+     
+      let parsedHost, parsedHotelDetails, parsedAmenities, parsedHotelRules;
+      try {
+        parsedHost         = JSON.parse(host);
+        parsedHotelDetails = JSON.parse(hotelDetails);
+        parsedAmenities    = JSON.parse(amenities || "[]");
+        parsedHotelRules   = JSON.parse(hotelRules);
+      } catch {
+        return res.status(400).json({ error: "Invalid data format in request" });
+      }
+
+      const hostDoc = await Host.findOne({ user: req.user.id });
+      if (!hostDoc) {
+        return res.status(403).json({ error: "You must be a registered host to add listings" });
+      }
+
+    
+      const listing = new Listing({
+        title      : title.trim(),
+        description: description.trim(),
+        image: {
+          url     : cloudResult.secure_url,
+          filename: cloudResult.public_id,
+        },
+        price  : parseFloat(price),
+        location: location.trim(),
+        country : country.trim(),
+        rating  : parseFloat(req.body.rating) || 4,
+        host: {
+          name      : parsedHost.name?.trim(),
+          experience: parsedHost.experience?.trim() || "",
+          contact   : parsedHost.contact?.trim()    || "",
+        },
+        hotelDetails: {
+          type     : parsedHotelDetails.type,
+          rooms    : parseInt(parsedHotelDetails.rooms),
+          bathrooms: parseInt(parsedHotelDetails.bathrooms),
+          maxGuests: parseInt(parsedHotelDetails.maxGuests),
+        },
+        amenities: parsedAmenities,
+        hotelRules: {
+          checkIn       : parsedHotelRules.checkIn?.trim(),
+          checkOut      : parsedHotelRules.checkOut?.trim(),
+          petsAllowed   : Boolean(parsedHotelRules.petsAllowed),
+          smokingAllowed: Boolean(parsedHotelRules.smokingAllowed),
+        },
+        owner: hostDoc._id,
+        geometry :response.body.features[1].geometry
+      });
+
+      const saved = await listing.save();
+      console.log("Listing saved:", saved);
+
+      return res.status(201).json({
+        success: "Listing created successfully",
+        listing: saved,
+      });
+
+    } catch (err) {
+      console.error("addListing error:", err);
+
+      // Clean up temp file on any error
+      if (req.file?.path) fs.unlink(req.file.path, () => {});
+
+      // If Cloudinary upload succeeded but DB failed, delete the orphan image
+      if (err.cloudinaryPublicId) {
+        cloudinary.uploader.destroy(err.cloudinaryPublicId).catch(console.error);
+      }
+
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
+
+app.delete("/api/deleteAccount", authMiddleware, async (req, res) => {
+  try {
+    const result = await User.findByIdAndDelete(req.user.id);
+    res.clearCookie("token");
+    res.status(200).json({ success: true, result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete account" });
+  }
+});
+
+
+app.use("/api/auth", authRoutes);
+app.use("/api",      listingRoutes);
+app.use("/api",      bookingRoutes);
+app.use("/api",      hostRoutes);
+
+
+app.use((err, req, res, next) => {
+  console.error("Global error:", err);
+  const statusCode = err.status || err.statusCode || 500;
+  res.status(statusCode).json({
+    error: err.message || "Internal server error",
+  });
+});
+
+
+app.listen(5000, () => console.log("Server running on http://localhost:5000"));

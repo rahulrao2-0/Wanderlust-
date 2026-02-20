@@ -1,0 +1,133 @@
+.reservations-wrapper {
+  padding: 10px 5px;
+  
+  /* display: flex;
+  flex-wrap: wrap; */
+}
+
+.page-title {
+  margin-bottom: 20px;
+}
+
+
+/* CARD */
+.reservation-card-new {
+  display: grid;
+  grid-template-columns: 150px 1fr 160px;
+  gap: 18px;
+
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reservation-card-new:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* IMAGE */
+.listing-image {
+  width: 150px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* CENTER */
+.info h3 {
+  margin: 0;
+}
+
+.location {
+  color: gray;
+  margin-bottom: 6px;
+}
+
+.email {
+  font-size: 13px;
+  color: gray;
+}
+
+/* RIGHT */
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.price {
+  color: green;
+  margin: 0;
+}
+
+/* STATUS */
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  background: orange;
+  color: white;
+}
+
+.status.confirmed {
+  background: green;
+  color: white;
+}
+
+.status.cancelled {
+  background: red;
+  color: white;
+}
+
+/* ACTION BUTTONS */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm,
+.reject {
+  border: none;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.confirm {
+  background: green;
+  color: white;
+}
+
+.reject {
+  background: red;
+  color: white;
+}
+
+.confirm:active,
+.reject:active {
+  transform: scale(0.95);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .reservation-card-new {
+    grid-template-columns: 1fr;
+  }
+
+  .right {
+    align-items: flex-start;
+  }
+}

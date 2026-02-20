@@ -1,0 +1,9 @@
+.Container {
+    width: 80%;       /* or any fixed width like 600px */
+    margin: 0 auto;
+    background-color: rgba(128, 128, 128, 0.041);   /* centers horizontally */
+}
+.MapHeading{
+    font-size: 1.5em;
+    text-align: center;
+}

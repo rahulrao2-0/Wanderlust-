@@ -1,0 +1,159 @@
+.filterbar {
+    background: #ffffff;
+    padding: 20px 10px;
+    margin: 20px 10px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 85px;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.filters-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 2px solid #e8eef5;
+    padding: 10px 18px;
+    border-radius: 12px;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transition: left 0.5s;
+}
+
+.filter-btn:hover {
+    border-color: #e74c3c;
+    background: linear-gradient(135deg, #fff5f3 0%, #ffe8e5 100%);
+    color: #e74c3c;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(231, 76, 60, 0.15);
+}
+
+.filter-btn:hover::before {
+    left: 100%;
+}
+
+.filter-btn i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.filter-btn:hover i {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: #ffffff;
+    border-color: #c0392b;
+    box-shadow: 0 8px 24px rgba(231, 76, 60, 0.35);
+}
+
+.filter-btn.active i {
+    animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .filterbar {
+        margin: 15px 10px;
+        padding: 15px 10px;
+    }
+
+    .filters-container {
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .filter-btn {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .filterbar {
+        top: 75px;
+        margin: 12px 5px;
+        padding: 12px 5px;
+    }
+
+    .filters-container {
+        gap: 8px;
+        padding: 0 5px;
+    }
+
+    .filter-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .filter-btn span {
+        display: none;
+    }
+
+    .filter-btn i {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .filterbar {
+        top: 70px;
+        margin: 8px 3px;
+        padding: 10px 3px;
+        border-radius: 12px;
+    }
+
+    .filters-container {
+        gap: 6px;
+        padding: 0 3px;
+    }
+
+    .filter-btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        border-radius: 8px;
+    }
+}
