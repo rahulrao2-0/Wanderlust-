@@ -30,7 +30,7 @@
 }
 
 .listingCard:hover {
-    transform: translateY(-12px);
+    
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     border: 1px solid rgba(0, 0, 0, 0.08);
 }

@@ -8,7 +8,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 
-router.post("/verify-email/:token", verifyEmail);
+router.post("/verify-email/:otp", verifyEmail);
 
 
 export default router;

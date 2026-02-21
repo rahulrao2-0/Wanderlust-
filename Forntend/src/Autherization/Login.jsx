@@ -15,7 +15,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { useAuth } from "../PropertyDetails/AuthContext";
 import "./Login.css"
-
+import Navbar from "../Home/Navbar";  
 export default function Login() {
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,6 +94,11 @@ export default function Login() {
   };
 
   return (
+    <>
+    <Navbar />
+    <br />
+    <br />
+    <br />
     <Box
       component="form"
       onSubmit={handleSignup}
@@ -192,5 +197,6 @@ export default function Login() {
         {isSubmitting ? "Logging...." : "Log-In"}
       </Button>
     </Box>
+    </>
   );
 }

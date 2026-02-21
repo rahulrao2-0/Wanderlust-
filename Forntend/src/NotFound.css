@@ -1,0 +1,131 @@
+.not-found-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    padding: 20px;
+}
+
+.not-found-content {
+    background: white;
+    border-radius: 16px;
+    padding: 60px 40px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.not-found-code {
+    font-size: 100px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    letter-spacing: 5px;
+}
+
+.not-found-content h1 {
+    color: #333;
+    font-size: 36px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.not-found-content p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.not-found-illustration {
+    font-size: 80px;
+    margin: 30px 0;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.not-found-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.not-found-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+    .not-found-content {
+        padding: 40px 30px;
+    }
+
+    .not-found-code {
+        font-size: 70px;
+    }
+
+    .not-found-content h1 {
+        font-size: 28px;
+    }
+
+    .not-found-content p {
+        font-size: 14px;
+    }
+
+    .not-found-illustration {
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .not-found-content {
+        padding: 30px 20px;
+    }
+
+    .not-found-code {
+        font-size: 50px;
+    }
+
+    .not-found-content h1 {
+        font-size: 24px;
+    }
+
+    .not-found-btn {
+        padding: 12px 30px;
+        font-size: 14px;
+    }
+}

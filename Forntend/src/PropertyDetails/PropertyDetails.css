@@ -7,3 +7,9 @@
     font-size: 1.5em;
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    .Container {
+        width: 100%;
+    }
+}

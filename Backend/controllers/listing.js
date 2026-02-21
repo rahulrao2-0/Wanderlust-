@@ -24,6 +24,7 @@ export const singleListing = async (req, res) => {
   try {
     const { propertyId } = req.params;
     const listing = await Listing.findById(propertyId);
+    // console.log(listing)
 
     if (!listing) {
       return res.status(404).json({ message: "Listing not found" });

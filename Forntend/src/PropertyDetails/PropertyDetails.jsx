@@ -37,11 +37,6 @@ export default function PropertyDetails() {
       <Heading />
       <ImageSection />
       <InfoSection />
-      <br />
-      <h2 className="MapHeading">Property Location</h2>
-      <br />
-      <Map coordinates={property?.geometry?.coordinates} />
-      <ReviewCard/>
     </div>
     </MyContext.Provider>
   );

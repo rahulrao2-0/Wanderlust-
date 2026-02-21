@@ -12,31 +12,32 @@ export const signup = async (req, res,next) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return next(new ExpressError(409,"User already exists"));
+      return next(new ExpressError(409,"User already exists !Please login instead"));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const verifyToken = crypto.randomBytes(32).toString("hex");
-    console.log(verifyToken)
+    const Otp = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(Otp)
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
       role,
       isVerified:false,
-      emailVerifyToken: verifyToken,
+      otp: Otp,
       emailVerifyExpires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
     });
 
     // const token = createToken(user);
-    const verifyURL = `http://localhost:5173/verify-email/${verifyToken}`;
+    
     await sendEmail({
       to: user.email,
       subject: "Verify your email",
       html: `
         <h2>Welcome to WanderLust</h2>
         <p>Click below to verify your email:</p>
-        <a href="${verifyURL}">Verify Email</a>
+        <h2>Verification-otp${Otp}</h2>
+        <p>This OTP will expire in 10 minutes.</p>
       `
     });
     
@@ -62,11 +63,11 @@ export const signup = async (req, res,next) => {
 };
 export const verifyEmail = async (req, res, next) => {
   try {
-    const { token } = req.params;
-    console.log(token)
+    const { otp } = req.params;
+    console.log(otp)
 
     const user = await User.findOne({
-      emailVerifyToken: token ,
+      otp: otp,
       emailVerifyExpires: { $gt: Date.now() }
     });
 
@@ -78,7 +79,7 @@ export const verifyEmail = async (req, res, next) => {
     }
 
     user.isVerified = true;
-    user.emailVerifyToken = undefined;
+    user.otp = undefined;
     user.emailVerifyExpires = undefined;
 
     await user.save();

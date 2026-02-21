@@ -24,6 +24,7 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 import mbxTilesets from "@mapbox/mapbox-sdk/services/tilesets.js";
 import mapboxSdk from "@mapbox/mapbox-sdk";
 import ExpressError from "./ExpressError.js";
+import OpenAI from "openai";
 const mapboxClient = mapboxSdk({
   accessToken: process.env.MAP_TOKEN,
 });
@@ -86,11 +87,15 @@ app.post(
   authMiddleware,
   upload.single("image"),           
   async (req, res) => {
-    const response= await geocodingClient.forwardGeocode({
-     query: `${req.body.location},${req.body.country}`,
-     limit: 2
-     })
-     .send()
+     const response = await geocodingClient.forwardGeocode({
+     query: `${req.body.location.trim()}, ${req.body.country.trim()}`,
+     limit: 5,
+     types: ['place', 'locality', 'address'],
+    autocomplete: true,
+  // Optional: add proximity for bias
+  // proximity: [userLongitude, userLatitude]
+    }).send();
+
      
      console.log("Geocoding response:", response.body.features[1].geometry);
     try {
@@ -200,12 +205,32 @@ app.post(
 app.delete("/api/deleteAccount", authMiddleware, async (req, res) => {
   try {
     const result = await User.findByIdAndDelete(req.user.id);
+    console.log("Account deletion result:", result);
     res.clearCookie("token");
     res.status(200).json({ success: true, result });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to delete account" });
   }
+});
+
+///OpenAI API
+app.post("/api/generateDescription", async (req, res) => {
+  // const { title, location } = req.body;
+  const input = `${req.body.title} ${req.body.location}`;
+  console.log("Generating description for:", input);  
+  const client = new OpenAI({
+    api_key: process.env.OPENAI_API_KEY
+  });
+  const response = await client.responses.create({
+    model:'gpt-4o-mini',
+    input:`write luxury and modern description for a listing whose ${input} in less than 20 words`
+  })
+
+  const result= response.output[0].content[0].text.trim();
+  console.log("Generated description:", result);
+  res.json({ description: result });
+
 });
 
 

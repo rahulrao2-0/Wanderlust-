@@ -12,6 +12,8 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import Map from "./Map";
+import Review from "./Review";
 
 
 
@@ -98,12 +100,13 @@ export default function InfoSection() {
     };
 
     return (
+      <>
       <div className="infoContainer">
         <div className="descriptionDiv">
-          <div className="hostName">
+          <div className="hostNameDiv">
             {property?.host?(
              <>
-             <span>Host : {property.host.name}</span>
+             <span className="hostname">Host : {property.host.name}</span>
              <span>Experience : {property.host.experience}</span>
              <span>contact : {property.host.contact}</span>
             </>):(<>
@@ -147,9 +150,9 @@ export default function InfoSection() {
             {property?.hotelRules? (
               <>
               <span>Check-In :{property.hotelRules.checkIn}</span>
-              <span>Check-In :{property.hotelRules.checkOut}</span><br />
+              <span>Check-Out :{property.hotelRules.checkOut}</span><br />
               <span>PetsAllowed: {property?.hotelRules?.petsAllowed? (<><span>Yes</span></>):(<><span>No</span></>)}</span>
-              <span>SmokinAllowed: {property?.hotelRules?.smokingAllowed? (<><span>Yes</span></>):(<><span>No</span></>)}</span>
+              <span>SmokingAllowed: {property?.hotelRules?.smokingAllowed? (<><span>Yes</span></>):(<><span>No</span></>)}</span>
               </>):(
                 <>
                 <span>Not avilable</span>
@@ -218,6 +221,21 @@ export default function InfoSection() {
             </Button>
           </div>
         </div>
-      </div>
+      </div><br /><br />
+      <h2 className="propertylocation">Where you'll be</h2>
+      <h3 className="propertylocation">{property?.location},{property?.country}</h3>
+      <div className="ReviewMapDiv">
+     <div className="mapContainer">
+      
+      <Map coordinates={property?.geometry?.coordinates} />
+    </div>
+
+    <div className="reviewContainer">
+      <Review />
+     </div>
+   </div>
+      </>
+     
+    
     );
 }

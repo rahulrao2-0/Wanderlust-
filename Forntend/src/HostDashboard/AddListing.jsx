@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, use } from 'react';
 import {
   Box, Container, Paper, TextField, Button, Typography, Grid,
   FormControl, InputLabel, Select, MenuItem, FormControlLabel,
@@ -7,6 +7,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../PropertyDetails/AuthContext';
 import './AddListing.css';
+import { useEffect } from 'react';
+
 
 const AMENITY_OPTIONS = [
   'WiFi', 'Air Conditioning', 'Heating', 'Kitchen', 'Washer', 'Dryer',
@@ -28,7 +30,7 @@ export default function AddListing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-
+  const [AiDescription, setAiDescription] = useState('');
   // ── IMAGE STATE ──────────────────────────────────────────────────────────────
   const [imageFile, setImageFile] = useState(null);       // File object
   const [imagePreview, setImagePreview] = useState('');   // Object URL for preview
@@ -91,7 +93,49 @@ export default function AddListing() {
     // Reset the hidden input so the same file can be re-selected if needed
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
-  // ─────────────────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    //   console.log("Form data changed:", formData);
+    if (!formData.title || !formData.location) {
+      return;
+    }
+
+    const Timer = setTimeout(async () => {
+      const response = await fetch('http://localhost:5000/api/generateDescription', {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: `Title: ${formData.title}`,
+          location: `Location: ${formData.location}`
+        })
+      })
+      const res = await response.json()
+      console.log(res.description);
+      setAiDescription(res.description)
+    }, 6000)
+    return () => clearTimeout(Timer)
+
+  }, [formData.title, formData.location])
+
+  useEffect(() => {
+    if (!AiDescription) return; // Guard: don't start animation if description is empty
+    const content = AiDescription.split(" ");
+    let idx = 0;
+    const interval = setInterval(() => {
+      setFormData(prev => ({
+        ...prev,
+        description: content.slice(0, idx + 1).join(" ")
+      }));
+
+      idx++;
+
+      if (idx >= content.length) {
+        clearInterval(interval);
+      }
+    }, 100)
+  }, [AiDescription]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -154,6 +198,8 @@ export default function AddListing() {
     }));
 
     console.log(payload)
+
+
     try {
       // ⚠️  Do NOT set Content-Type manually — the browser sets it automatically
       //     (with the correct boundary) when you pass a FormData body.
@@ -178,9 +224,9 @@ export default function AddListing() {
 
 
   return (
-    
+
     <Container className="add-listing-wrapper" maxWidth="md" sx={{ py: 4 }}>
-      <button>back</button>
+      
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>Add New Listing</Typography>
 
@@ -211,9 +257,23 @@ export default function AddListing() {
             </Grid>
 
             <Grid item xs={12}>
+              {AiDescription && formData.description === AiDescription && (
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <span style={{ marginRight: 6 }} title="AI generated">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="12" cy="12" r="10" stroke="#FFD600" strokeWidth="2" fill="#FFF9C4" />
+                      <path d="M12 7v5" stroke="#FFD600" strokeWidth="2" strokeLinecap="round" />
+                      <circle cx="12" cy="16" r="1" fill="#FFD600" />
+                    </svg>
+                  </span>
+                  <Typography variant="caption" color="warning.main">
+                    AI generated
+                  </Typography>
+                </Box>
+              )}
               <TextField
                 fullWidth required multiline rows={4}
-                label="Description" name="description"
+                label="Description" name="description" className='description'
                 value={formData.description} onChange={handleChange}
               />
             </Grid>
@@ -315,15 +375,25 @@ export default function AddListing() {
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
-                label="Experience (e.g. 5 years)" name="hostExperience"
+                label="Experience (e.g. 5 years)" name="hostExperience" type='number'
                 value={formData.hostExperience} onChange={handleChange}
+
               />
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
-                label="Contact" name="hostContact"
-                value={formData.hostContact} onChange={handleChange}
+                label="Contact"
+                name="hostContact"
+                type="tel"
+                value={formData.hostContact}
+                onChange={handleChange}
+                inputProps={{
+                  minLength: 10,
+                  maxLength: 10,
+                  pattern: "[0-9]{10}"
+                }}
+                required
               />
             </Grid>
           </Grid>

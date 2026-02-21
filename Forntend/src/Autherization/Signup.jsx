@@ -14,7 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { useAuth } from "../PropertyDetails/AuthContext";
-
+import Navbar from "../Home/Navbar";
 export default function Signup() {
   const navigate = useNavigate()
   const { user, setUser } = useAuth();
@@ -66,14 +66,16 @@ export default function Signup() {
 
       const result = await response.json();
       console.log(result);
-      if (result.success) {
-        setUser(result.user); // update context → user is logged in
+      if(result.error){
+        setError(result.error)
+        setIsSubmitting(false);
+        return;
       }
 
 
       if (result.success) {
-        alert("Signup successful !")
-        navigate("/")
+        alert("Signup successful! Please verify your email before logging in.");
+        navigate("/otp")
 
       } else {
         setError(result.message)
@@ -96,6 +98,11 @@ export default function Signup() {
   };
 
   return (
+    <>
+    <Navbar />
+    <br />
+    <br />
+    <br />
     <Box
       component="form"
       onSubmit={handleSignup}
@@ -194,5 +201,6 @@ export default function Signup() {
         {isSubmitting ? "Signing Up..." : "Sign Up"}
       </Button>
     </Box>
+    </>
   );
 }

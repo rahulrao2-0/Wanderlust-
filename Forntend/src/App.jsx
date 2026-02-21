@@ -6,8 +6,10 @@ import Signup from "./Autherization/Signup";
 import Host from "./Host";
 import MainHostDashboard from "./HostDashboard/mainHostDashboard";
 import AddListing from "./HostDashboard/AddListing";
-import VerifyEmail from "./VerifyEmail";
+
 import Settings from "./HostDashboard/Settings";
+import OTP from "./Autherization/OTP";
+import NotFound from "./NotFound";
 function App() {
   return (
     <Routes>
@@ -18,8 +20,10 @@ function App() {
       <Route path="/host" element={<Host />} />
       <Route path="/host/dashboard" element={<MainHostDashboard />} />
       <Route path="/addListing" element={<AddListing />} />
-      <Route path="/verify-email/:token" element={<VerifyEmail/>} />
+    
       <Route path="/settings" element={<Settings/>} />
+      <Route path="/otp" element={<OTP/>} />
+      <Route path="*" element={<NotFound />} /> 
 
     </Routes>
   );

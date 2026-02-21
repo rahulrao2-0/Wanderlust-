@@ -88,14 +88,14 @@ const listingSchema = new mongoose.Schema(
 
     // 📋 HOTEL RULES
     hotelRules: {
-      // checkIn: {
-      //   type: String,
-      //   required: true
-      // },
-      // checkOut: {
-      //   type: String,
-      //   required: true
-      // },
+      checkIn: {
+        type: String,
+        required: true
+      },
+      checkOut: {
+        type: String,
+        required: true
+      },
       petsAllowed: {
         type: Boolean,
         default: false
