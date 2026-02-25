@@ -1,4 +1,4 @@
-import React, { useState, useRef, use } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Box, Container, Paper, TextField, Button, Typography, Grid,
   FormControl, InputLabel, Select, MenuItem, FormControlLabel,
@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../PropertyDetails/AuthContext';
 import './AddListing.css';
 import { useEffect } from 'react';
-
 
 const AMENITY_OPTIONS = [
   'WiFi', 'Air Conditioning', 'Heating', 'Kitchen', 'Washer', 'Dryer',
@@ -22,19 +21,21 @@ const PROPERTY_TYPES = [
   'House', 'Condo', 'Studio', 'Cabin', 'Loft'
 ];
 
+const MAX_IMAGES = 4;
+
 export default function AddListing() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const fileInputRef = useRef(null);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [AiDescription, setAiDescription] = useState('');
-  // ── IMAGE STATE ──────────────────────────────────────────────────────────────
-  const [imageFile, setImageFile] = useState(null);       // File object
-  const [imagePreview, setImagePreview] = useState('');   // Object URL for preview
-  // ─────────────────────────────────────────────────────────────────────────────
+
+  // ── IMAGE STATE (up to 4 images) ───────────────────────────────────────────
+  const [imageFiles, setImageFiles] = useState([]);       // Array of File objects
+  const [imagePreviews, setImagePreviews] = useState([]); // Array of Object URLs
+  // ───────────────────────────────────────────────────────────────────────────
 
   const [formData, setFormData] = useState({
     title: '',
@@ -74,53 +75,60 @@ export default function AddListing() {
     }));
   };
 
-  // ── FILE UPLOAD HANDLERS ─────────────────────────────────────────────────────
+  // ── FILE UPLOAD HANDLERS (multi-image, max 4) ──────────────────────────────
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const selectedFiles = Array.from(e.target.files);
+    if (!selectedFiles.length) return;
 
-    // Revoke previous object URL to avoid memory leaks
-    if (imagePreview) URL.revokeObjectURL(imagePreview);
+    const remaining = MAX_IMAGES - imageFiles.length;
+    const filesToAdd = selectedFiles.slice(0, remaining);
 
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
+    const newPreviews = filesToAdd.map(file => URL.createObjectURL(file));
 
-  const handleRemoveImage = () => {
-    if (imagePreview) URL.revokeObjectURL(imagePreview);
-    setImageFile(null);
-    setImagePreview('');
-    // Reset the hidden input so the same file can be re-selected if needed
+    setImageFiles(prev => [...prev, ...filesToAdd]);
+    setImagePreviews(prev => [...prev, ...newPreviews]);
+
+    // Reset input so same files can be re-selected if needed
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
+
+  const handleRemoveImage = (index) => {
+    URL.revokeObjectURL(imagePreviews[index]);
+    setImageFiles(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Cleanup object URLs on unmount
   useEffect(() => {
-    //   console.log("Form data changed:", formData);
-    if (!formData.title || !formData.location) {
-      return;
-    }
+    return () => {
+      imagePreviews.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, []);
+  // ───────────────────────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    if (!formData.title || !formData.location) return;
 
     const Timer = setTimeout(async () => {
       const response = await fetch('http://localhost:5000/api/generateDescription', {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: `Title: ${formData.title}`,
           location: `Location: ${formData.location}`
         })
-      })
-      const res = await response.json()
+      });
+      const res = await response.json();
       console.log(res.description);
-      setAiDescription(res.description)
-    }, 6000)
-    return () => clearTimeout(Timer)
+      setAiDescription(res.description);
+    }, 6000);
 
-  }, [formData.title, formData.location])
+    return () => clearTimeout(Timer);
+  }, [formData.title, formData.location]);
 
   useEffect(() => {
-    if (!AiDescription) return; // Guard: don't start animation if description is empty
+    if (!AiDescription) return;
     const content = AiDescription.split(" ");
     let idx = 0;
     const interval = setInterval(() => {
@@ -128,13 +136,9 @@ export default function AddListing() {
         ...prev,
         description: content.slice(0, idx + 1).join(" ")
       }));
-
       idx++;
-
-      if (idx >= content.length) {
-        clearInterval(interval);
-      }
-    }, 100)
+      if (idx >= content.length) clearInterval(interval);
+    }, 100);
   }, [AiDescription]);
 
   const handleSubmit = async (e) => {
@@ -143,53 +147,50 @@ export default function AddListing() {
     setSuccess(false);
     setLoading(true);
 
-    // Validation
     const required = [
       'title', 'description', 'price', 'location', 'country',
-      'hostName', 'propertyType', 'rooms', 'bathrooms',
-      'maxGuests', 'checkIn', 'checkOut',
+      'hostName', 'propertyType', 'rooms', 'bathrooms', 'maxGuests',
+      'checkIn', 'checkOut',
     ];
     const missing = required.filter(f => !formData[f]);
-    if (missing.length || !imageFile) {
+
+    if (missing.length || imageFiles.length === 0) {
       setError(
-        !imageFile
-          ? 'Please upload a property image'
+        imageFiles.length === 0
+          ? 'Please upload at least one property image'
           : 'Please fill in all required fields'
       );
       setLoading(false);
       return;
     }
 
-    console.log(formData, imageFile)
+    console.log(formData, imageFiles);
 
-    // Build multipart/form-data so the file is sent correctly
     const payload = new FormData();
-    payload.append('image', imageFile);             // actual file
-    payload.append('imageFilename', imageFile.name); // original filename
 
-    // Append all other fields (flatten nested objects as JSON strings)
+    // Append all images
+    imageFiles.forEach((file, index) => {
+      payload.append('images', file);
+    });
+
     payload.append('title', formData.title.trim());
     payload.append('description', formData.description.trim());
     payload.append('price', parseFloat(formData.price));
     payload.append('location', formData.location.trim());
     payload.append('country', formData.country.trim());
     payload.append('rating', parseFloat(formData.rating) || 4);
-
     payload.append('host', JSON.stringify({
       name: formData.hostName.trim(),
       experience: formData.hostExperience.trim() || undefined,
       contact: formData.hostContact.trim() || undefined,
     }));
-
     payload.append('hotelDetails', JSON.stringify({
       type: formData.propertyType,
       rooms: parseInt(formData.rooms),
       bathrooms: parseInt(formData.bathrooms),
       maxGuests: parseInt(formData.maxGuests),
     }));
-
     payload.append('amenities', JSON.stringify(formData.amenities));
-
     payload.append('hotelRules', JSON.stringify({
       checkIn: formData.checkIn.trim(),
       checkOut: formData.checkOut.trim(),
@@ -197,21 +198,16 @@ export default function AddListing() {
       smokingAllowed: formData.smokingAllowed,
     }));
 
-    console.log(payload)
-
+    console.log(payload);
 
     try {
-      // ⚠️  Do NOT set Content-Type manually — the browser sets it automatically
-      //     (with the correct boundary) when you pass a FormData body.
       const response = await fetch('http://localhost:5000/api/addListing', {
         method: 'POST',
         credentials: 'include',
         body: payload,
       });
-
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to create listing');
-
       setSuccess(true);
       setTimeout(() => navigate('/host/dashboard'), 2000);
     } catch (err) {
@@ -221,14 +217,12 @@ export default function AddListing() {
     }
   };
 
-
-
   return (
-
-    <Container className="add-listing-wrapper" maxWidth="md" sx={{ py: 4 }}>
-      
+    <Container maxWidth="md" sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom>Add New Listing</Typography>
+        <Typography variant="h4" gutterBottom fontWeight={700}>
+          Add New Listing
+        </Typography>
 
         {error && (
           <Alert severity="error" onClose={() => setError('')} sx={{ mb: 2 }}>
@@ -244,171 +238,201 @@ export default function AddListing() {
         <Box component="form" onSubmit={handleSubmit}>
 
           {/* ── Basic Information ─────────────────────────────────────── */}
-          <Typography variant="h6" gutterBottom>Basic Information</Typography>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            Basic Information
+          </Typography>
           <Divider sx={{ mb: 2 }} />
-
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth required
-                label="Title" name="title"
-                value={formData.title} onChange={handleChange}
-              />
+              <Box sx={{ position: 'relative' }}>
+                <TextField
+                  fullWidth required
+                  label="Property Title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                />
+                {AiDescription && formData.description === AiDescription && (
+                  <Chip
+                    label="AI generated"
+                    size="small"
+                    color="secondary"
+                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                  />
+                )}
+              </Box>
             </Grid>
-
             <Grid item xs={12}>
-              {AiDescription && formData.description === AiDescription && (
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <span style={{ marginRight: 6 }} title="AI generated">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="12" cy="12" r="10" stroke="#FFD600" strokeWidth="2" fill="#FFF9C4" />
-                      <path d="M12 7v5" stroke="#FFD600" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="12" cy="16" r="1" fill="#FFD600" />
-                    </svg>
-                  </span>
-                  <Typography variant="caption" color="warning.main">
-                    AI generated
-                  </Typography>
-                </Box>
-              )}
               <TextField
                 fullWidth required multiline rows={4}
-                label="Description" name="description" className='description'
-                value={formData.description} onChange={handleChange}
+                label="Description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
               />
             </Grid>
-
-            {/* ── Image Upload ─────────────────────────────────────────── */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle2" gutterBottom>
-                Property Image *
-              </Typography>
-
-              {/* Hidden native file input */}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
-
-              {/* Preview or upload button */}
-              {imagePreview ? (
-                <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                  <Box
-                    component="img"
-                    src={imagePreview}
-                    alt="Preview"
-                    sx={{
-                      width: '100%', maxWidth: 400, maxHeight: 240,
-                      objectFit: 'cover', borderRadius: 2,
-                      border: '1px solid #e0e0e0', display: 'block',
-                    }}
-                  />
-                  <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                    <Button
-                      size="small" variant="outlined"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      Change Image
-                    </Button>
-                    <Button
-                      size="small" variant="outlined" color="error"
-                      onClick={handleRemoveImage}
-                    >
-                      Remove
-                    </Button>
-                  </Stack>
-                  <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
-                    {imageFile?.name}
-                  </Typography>
-                </Box>
-              ) : (
-                <Button
-                  variant="outlined"
-                  onClick={() => fileInputRef.current?.click()}
-                  sx={{ height: 80, width: '100%', borderStyle: 'dashed' }}
-                >
-                  Click to Upload Image
-                </Button>
-              )}
-            </Grid>
-            {/* ─────────────────────────────────────────────────────────── */}
-
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Price per night ($)" name="price" type="number"
-                value={formData.price} onChange={handleChange}
-                inputProps={{ min: 0, step: '0.01' }}
+                label="Price per Night ($)"
+                name="price"
+                type="number"
+                value={formData.price}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Location" name="location"
-                value={formData.location} onChange={handleChange}
+                label="Location / City"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Country" name="country"
-                value={formData.country} onChange={handleChange}
+                label="Country"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Rating (1-5)"
+                name="rating"
+                type="number"
+                inputProps={{ min: 1, max: 5, step: 0.1 }}
+                value={formData.rating}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
 
-          {/* ── Host Information ──────────────────────────────────────── */}
-          <Typography variant="h6" sx={{ mt: 4 }} gutterBottom>Host Information</Typography>
+          {/* ── Image Upload (up to 4) ────────────────────────────────── */}
+          <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
+            Property Images * <Typography component="span" variant="body2" color="text.secondary">(up to {MAX_IMAGES})</Typography>
+          </Typography>
           <Divider sx={{ mb: 2 }} />
 
+          {/* Hidden native file input — multiple allowed */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            {/* Existing image previews */}
+            {imagePreviews.map((preview, index) => (
+              <Grid item xs={6} sm={3} key={index}>
+                <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden', border: '1px solid #ddd' }}>
+                  <Box
+                    component="img"
+                    src={preview}
+                    alt={`Property image ${index + 1}`}
+                    sx={{ width: '100%', height: 120, objectFit: 'cover', display: 'block', cursor: 'pointer' }}
+                    onClick={() => fileInputRef.current?.click()}
+                  />
+                  <Button
+                    size="small"
+                    color="error"
+                    variant="contained"
+                    onClick={() => handleRemoveImage(index)}
+                    sx={{
+                      position: 'absolute', top: 4, right: 4,
+                      minWidth: 0, px: 1, py: 0.25, fontSize: '0.7rem'
+                    }}
+                  >
+                    ✕
+                  </Button>
+                  <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', p: 0.5, bgcolor: '#f5f5f5', noWrap: true }}>
+                    {imageFiles[index]?.name}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+
+            {/* Add more slot — shown if under the limit */}
+            {imageFiles.length < MAX_IMAGES && (
+              <Grid item xs={6} sm={3}>
+                <Button
+                  variant="outlined"
+                  onClick={() => fileInputRef.current?.click()}
+                  sx={{
+                    height: 155, width: '100%',
+                    borderStyle: 'dashed',
+                    flexDirection: 'column',
+                    gap: 1,
+                    color: 'text.secondary'
+                  }}
+                >
+                  <Typography variant="h4" lineHeight={1}>+</Typography>
+                  <Typography variant="caption">
+                    {imageFiles.length === 0
+                      ? 'Upload Images'
+                      : `Add More (${imageFiles.length}/${MAX_IMAGES})`}
+                  </Typography>
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+
+          {/* ── Host Information ──────────────────────────────────────── */}
+          <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
+            Host Information
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Host Name" name="hostName"
-                value={formData.hostName} onChange={handleChange}
+                label="Host Name"
+                name="hostName"
+                value={formData.hostName}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Experience (e.g. 5 years)" name="hostExperience" type='number'
-                value={formData.hostExperience} onChange={handleChange}
-
+                label="Host Experience"
+                name="hostExperience"
+                value={formData.hostExperience}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Contact"
+                label="Host Contact"
                 name="hostContact"
-                type="tel"
                 value={formData.hostContact}
                 onChange={handleChange}
-                inputProps={{
-                  minLength: 10,
-                  maxLength: 10,
-                  pattern: "[0-9]{10}"
-                }}
-                required
               />
             </Grid>
           </Grid>
 
           {/* ── Property Details ──────────────────────────────────────── */}
-          <Typography variant="h6" sx={{ mt: 4 }} gutterBottom>Property Details</Typography>
+          <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
+            Property Details
+          </Typography>
           <Divider sx={{ mb: 2 }} />
-
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={6}>
               <FormControl fullWidth required>
                 <InputLabel>Property Type</InputLabel>
                 <Select
-                  label="Property Type" name="propertyType"
-                  value={formData.propertyType} onChange={handleChange}
+                  name="propertyType"
+                  value={formData.propertyType}
+                  label="Property Type"
+                  onChange={handleChange}
                 >
                   {PROPERTY_TYPES.map(type => (
                     <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -416,42 +440,48 @@ export default function AddListing() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Rooms" name="rooms" type="number"
-                value={formData.rooms} onChange={handleChange}
-                inputProps={{ min: 1 }}
+                label="Number of Rooms"
+                name="rooms"
+                type="number"
+                value={formData.rooms}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Bathrooms" name="bathrooms" type="number"
-                value={formData.bathrooms} onChange={handleChange}
-                inputProps={{ min: 1 }}
+                label="Number of Bathrooms"
+                name="bathrooms"
+                type="number"
+                value={formData.bathrooms}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Max Guests" name="maxGuests" type="number"
-                value={formData.maxGuests} onChange={handleChange}
-                inputProps={{ min: 1 }}
+                label="Max Guests"
+                name="maxGuests"
+                type="number"
+                value={formData.maxGuests}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
 
           {/* ── Amenities ─────────────────────────────────────────────── */}
-          <Typography variant="h6" sx={{ mt: 4 }} gutterBottom>Amenities</Typography>
+          <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
+            Amenities
+          </Typography>
           <Divider sx={{ mb: 2 }} />
-
-          <Stack direction="row" flexWrap="wrap" gap={1}>
+          <Stack direction="row" flexWrap="wrap" gap={1} sx={{ mb: 1 }}>
             {AMENITY_OPTIONS.map(amenity => (
               <Chip
                 key={amenity}
                 label={amenity}
-                clickable
                 onClick={() => handleAmenityToggle(amenity)}
                 color={formData.amenities.includes(amenity) ? 'primary' : 'default'}
                 variant={formData.amenities.includes(amenity) ? 'filled' : 'outlined'}
@@ -459,37 +489,41 @@ export default function AddListing() {
             ))}
           </Stack>
           {formData.amenities.length > 0 && (
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
               Selected: {formData.amenities.join(', ')}
             </Typography>
           )}
 
           {/* ── Rules & Policies ──────────────────────────────────────── */}
-          <Typography variant="h6" sx={{ mt: 4 }} gutterBottom>Rules & Policies</Typography>
+          <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
+            Rules & Policies
+          </Typography>
           <Divider sx={{ mb: 2 }} />
-
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Check-in Time" name="checkIn"
-                value={formData.checkIn} onChange={handleChange}
-                placeholder="e.g. 3:00 PM"
+                label="Check-In Time"
+                name="checkIn"
+                value={formData.checkIn}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth required
-                label="Check-out Time" name="checkOut"
-                value={formData.checkOut} onChange={handleChange}
-                placeholder="e.g. 11:00 AM"
+                label="Check-Out Time"
+                name="checkOut"
+                value={formData.checkOut}
+                onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="petsAllowed" checked={formData.petsAllowed}
+                    name="petsAllowed"
+                    checked={formData.petsAllowed}
                     onChange={handleChange}
                   />
                 }
@@ -498,7 +532,8 @@ export default function AddListing() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="smokingAllowed" checked={formData.smokingAllowed}
+                    name="smokingAllowed"
+                    checked={formData.smokingAllowed}
                     onChange={handleChange}
                   />
                 }
@@ -520,7 +555,7 @@ export default function AddListing() {
               type="submit"
               variant="contained"
               disabled={loading}
-              startIcon={loading ? <CircularProgress size={18} color="inherit" /> : null}
+              startIcon={loading ? <CircularProgress size={18} /> : null}
             >
               {loading ? 'Creating...' : 'Create Listing'}
             </Button>

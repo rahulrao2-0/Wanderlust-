@@ -4,6 +4,7 @@ import { createToken } from "../utils/jwt.js";
 import ExpressError from "../ExpressError.js";
 import sendEmail from "../utils/sendEmails.js";
 import crypto from "crypto";
+import strict from "assert/strict";
 
 
 export const signup = async (req, res,next) => {
@@ -86,11 +87,11 @@ export const verifyEmail = async (req, res, next) => {
     const JWTtoken = createToken(user);
 
     res.cookie("token", JWTtoken, {
-     httpOnly: true,
-     sameSite: "lax",
-     secure: false,
-     maxAge: 24 * 60 * 60 * 1000
-     });
+    httpOnly: true,
+    secure: true,          // must be true for HTTPS
+    sameSite: "lax",      // must be none for cross-site
+    maxAge: 24 * 60 * 60 * 1000
+    });
 
     res.status(200).json({
       success: true,
@@ -106,25 +107,28 @@ export const verifyEmail = async (req, res, next) => {
 export const login = async (req, res,next) => {
   try {
     const { email, password } = req.body;
+    console.log(email,password)
 
     const user = await User.findOne({ email });
     console.log(user.name)
     if (!user) {
       next(new ExpressError(409,"User not found"))
     }
+    console.log(user)
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return next(new ExpressError(401,"Incorrect Password Try Again!"))
     }
-
+    console.log(isMatch)
     const token = createToken(user);
 
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    httpOnly: true,
+    secure: true,          // REQUIRED for https
+    sameSite: "lax",      // VERY IMPORTANT
+   maxAge: 24 * 60 * 60 * 1000
+   });
 
     res.json({
       success: true,

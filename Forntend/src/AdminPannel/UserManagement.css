@@ -1,0 +1,85 @@
+/* UserManagement.css */
+.user-management {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 24px;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #234e8c;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #234e8c;
+    display: inline-block;
+}
+
+.user-avatar.host {
+    background: #2980b9;
+}
+
+.user-avatar.user {
+    background: #8e44ad;
+}
+
+.user-email {
+    flex: 1;
+    color: #234e8c;
+}
+
+.user-role {
+    color: #888;
+    font-size: 0.9rem;
+    margin-right: 8px;
+}
+
+.view-btn {
+    background: #2980b9;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.view-btn:hover {
+    background: #234e8c;
+}
+
+.block-btn {
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.block-btn:hover {
+    background: #d35400;
+}
+
+.user-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}

@@ -1,0 +1,60 @@
+/* PropertyListings.css */
+.property-listings {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 24px;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #234e8c;
+}
+
+.property-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.property-table th,
+.property-table td {
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.property-table th {
+    background: #f4f6fa;
+    color: #234e8c;
+}
+
+.status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status.pending {
+    background: #ffe5b4;
+    color: #e67e22;
+}
+
+.status.approved {
+    background: #d4f8e8;
+    color: #27ae60;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}

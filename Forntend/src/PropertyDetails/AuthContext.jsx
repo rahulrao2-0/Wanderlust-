@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     console.log("AuthProvider user updated 👉", user);
   }, [user]);
-  
+
 
   const checkAuth = async () => {
     try {
@@ -24,9 +24,9 @@ export const AuthProvider = ({ children }) => {
       if (res.ok) {
         const data = await res.json();
         setUser({
-          user:data.user,
-          isHost:data.isHost,
-          host:data.host,  
+          user: data.user,
+          isHost: data.isHost,
+          host: data.host,
         }); // { id, username, role }
       } else {
         setUser(null);

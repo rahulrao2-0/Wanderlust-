@@ -66,7 +66,7 @@ export default function Signup() {
 
       const result = await response.json();
       console.log(result);
-      if(result.error){
+      if (result.error) {
         setError(result.error)
         setIsSubmitting(false);
         return;
@@ -75,7 +75,7 @@ export default function Signup() {
 
       if (result.success) {
         alert("Signup successful! Please verify your email before logging in.");
-        navigate("/otp")
+        navigate("/otp", { replace: true })
 
       } else {
         setError(result.message)
@@ -99,108 +99,108 @@ export default function Signup() {
 
   return (
     <>
-    <Navbar />
-    <br />
-    <br />
-    <br />
-    <Box
-      component="form"
-      onSubmit={handleSignup}
-      sx={{
-        width: 350,
-        margin: "50px auto",
-        padding: 4,
-        boxShadow: 3,
-        borderRadius: 2,
-        backgroundColor: "background.paper",
-      }}
-      noValidate
-    >
-      <Typography variant="h5" textAlign="center" mb={2}>
-        Sign Up
-      </Typography>
-
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-
-      <TextField
-        required
-        label="Username"
-        name="name"
-        variant="standard"
-        fullWidth
-        value={signupData.name}
-        onChange={handleSignupData}
-      />
-
-      <TextField
-        required
-        label="Email"
-        name="email"
-        type="email"
-        variant="standard"
-        fullWidth
-        value={signupData.email}
-        onChange={handleSignupData}
-        sx={{ mt: 2 }}
-      />
-
-      <TextField
-        required
-        label="Password"
-        name="password"
-        type={showPassword ? "text" : "password"}
-        variant="standard"
-        fullWidth
-        value={signupData.password}
-        onChange={handleSignupData}
-        sx={{ mt: 2 }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => setShowPassword((prev) => !prev)}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
+      <Navbar />
+      <br />
+      <br />
+      <br />
+      <Box
+        component="form"
+        onSubmit={handleSignup}
+        sx={{
+          width: 350,
+          margin: "50px auto",
+          padding: 4,
+          boxShadow: 3,
+          borderRadius: 2,
+          backgroundColor: "background.paper",
         }}
-      />
-      {/* ROLE CHECKBOXES */}
-      <FormLabel sx={{ mt: 3, display: "block" }}>Register as</FormLabel>
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={signupData.role === "user"}
-            onChange={() => handleRoleChange("user")}
-          />
-        }
-        label="User"
-      />
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={signupData.role === "host"}
-            onChange={() => handleRoleChange("host")}
-          />
-        }
-        label="Host"
-      />
-
-      <Button
-        type="submit"
-        variant="contained"
-        color="success"
-        fullWidth
-        sx={{ mt: 3 }}
-        disabled={isSubmitting}
+        noValidate
       >
-        {isSubmitting ? "Signing Up..." : "Sign Up"}
-      </Button>
-    </Box>
+        <Typography variant="h5" textAlign="center" mb={2}>
+          Sign Up
+        </Typography>
+
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+        <TextField
+          required
+          label="Username"
+          name="name"
+          variant="standard"
+          fullWidth
+          value={signupData.name}
+          onChange={handleSignupData}
+        />
+
+        <TextField
+          required
+          label="Email"
+          name="email"
+          type="email"
+          variant="standard"
+          fullWidth
+          value={signupData.email}
+          onChange={handleSignupData}
+          sx={{ mt: 2 }}
+        />
+
+        <TextField
+          required
+          label="Password"
+          name="password"
+          type={showPassword ? "text" : "password"}
+          variant="standard"
+          fullWidth
+          value={signupData.password}
+          onChange={handleSignupData}
+          sx={{ mt: 2 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        {/* ROLE CHECKBOXES */}
+        <FormLabel sx={{ mt: 3, display: "block" }}>Register as</FormLabel>
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={signupData.role === "user"}
+              onChange={() => handleRoleChange("user")}
+            />
+          }
+          label="User"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={signupData.role === "host"}
+              onChange={() => handleRoleChange("host")}
+            />
+          }
+          label="Host"
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="success"
+          fullWidth
+          sx={{ mt: 3 }}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Signing Up..." : "Sign Up"}
+        </Button>
+      </Box>
     </>
   );
 }

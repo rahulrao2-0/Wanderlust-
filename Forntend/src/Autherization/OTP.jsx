@@ -2,9 +2,9 @@ import React, { use, useState } from "react";
 import "./OTP.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../PropertyDetails/AuthContext";
-const OTP = ({ email,  onResend }) => {
+const OTP = ({ email, onResend }) => {
     const Navigate = useNavigate();
-    const{checkAuth} = useAuth();
+    const { checkAuth } = useAuth();
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -26,20 +26,21 @@ const OTP = ({ email,  onResend }) => {
         setLoading(true);
         try {
             console.log("Attempting to verify OTP:", otp);
-           const res = await fetch(
-          `http://localhost:5000/api/auth/verify-email/${otp}`,
-          { method: "POST",
-            credentials: "include"
-           }
-        );
-        const result = await res.json();
-        if (result.success) {
-            alert("Email verified successfully!");
-            await checkAuth(); // Update auth state in context
-            Navigate("/")
-        } else {
-            throw new Error(result.message || "Invalid OTP. Please try again.");       
-        }
+            const res = await fetch(
+                `http://localhost:5000/api/auth/verify-email/${otp}`,
+                {
+                    method: "POST",
+                    credentials: "include"
+                }
+            );
+            const result = await res.json();
+            if (result.success) {
+                alert("Email verified successfully!");
+                await checkAuth(); // Update auth state in context
+                Navigate("/", { replace: true });
+            } else {
+                throw new Error(result.message || "Invalid OTP. Please try again.");
+            }
         } catch (err) {
             setError(err.message || "Invalid OTP. Please try again.");
         } finally {

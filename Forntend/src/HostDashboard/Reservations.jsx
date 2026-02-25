@@ -67,67 +67,67 @@ export default function Reservations() {
     <div className="reservations-wrapper">
       <h2 className="page-title">Reservations</h2>
       <div className="allcards">
-      {reservations.length === 0 ? (
-        <p>No reservations found.</p>
-      ) : (
-        
-        reservations.map((r) => (
-          <div key={r._id} className="reservation-card-new">
-            
-            {/* IMAGE */}
-            <img
-              src={r.listing?.image?.url}
-              alt={r.listing?.title}
-              className="listing-image"
-            />
+        {reservations.length === 0 ? (
+          <p>No reservations found.</p>
+        ) : (
 
-            {/* CENTER INFO */}
-            <div className="info">
-              <h3>{r.listing?.title}</h3>
-              <p className="location">{r.listing?.location}</p>
+          reservations.map((r) => (
+            <div key={r._id} className="reservation-card-new">
 
-              <p><b>Guest:</b> {r.user?.name}</p>
-              <p className="email">{r.user?.email}</p>
+              {/* IMAGE */}
+              <img
+                src={r.listing?.image?.url}
+                alt={r.listing?.title}
+                className="listing-image"
+              />
 
-              <p>
-                <b>Stay:</b>{" "}
-                {new Date(r.checkIn).toLocaleDateString()} →{" "}
-                {new Date(r.checkOut).toLocaleDateString()}
-              </p>
+              {/* CENTER INFO */}
+              <div className="info">
+                <h3>{r.listing?.title}</h3>
+                <p className="location">{r.listing?.location}</p>
 
-              <p><b>Guests:</b> {r.guests}</p>
+                <p><b>Guest:</b> {r.user?.name}</p>
+                <p className="email">{r.user?.email}</p>
+
+                <p>
+                  <b>Stay:</b>{" "}
+                  {new Date(r.checkIn).toLocaleDateString()} →{" "}
+                  {new Date(r.checkOut).toLocaleDateString()}
+                </p>
+
+                <p><b>Guests:</b> {r.guests}</p>
+              </div>
+
+              {/* RIGHT SIDE */}
+              <div className="right">
+                <h2 className="price">₹ {r.totalPrice}</h2>
+
+                <span className={`status ${r.status}`}>{r.status}</span>
+
+                {r.status === "pending" && (
+                  <div className="actions">
+                    <button
+                      className="confirm"
+                      onClick={() => updateStatus(r._id, "confirmed")}
+                    >
+                      Confirm
+                    </button>
+
+                    <button
+                      className="reject"
+                      onClick={() => updateStatus(r._id, "cancelled")}
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
+              </div>
+
             </div>
 
-            {/* RIGHT SIDE */}
-            <div className="right">
-              <h2 className="price">₹ {r.totalPrice}</h2>
+          ))
 
-              <span className={`status ${r.status}`}>{r.status}</span>
-
-              {r.status === "pending" && (
-                <div className="actions">
-                  <button
-                    className="confirm"
-                    onClick={() => updateStatus(r._id, "confirmed")}
-                  >
-                    Confirm
-                  </button>
-
-                  <button
-                    className="reject"
-                    onClick={() => updateStatus(r._id, "cancelled")}
-                  >
-                    Reject
-                  </button>
-                </div>
-              )}
-            </div>
-
-          </div>
-        
-        ))
-        
-      )}
+        )}
       </div>
     </div>
   );

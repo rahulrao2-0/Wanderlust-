@@ -14,7 +14,7 @@ const fetchListings = async () => {
 };
 
 export default function AllListings({ searchResults = [] }) {
-  
+
   const {
     data: fetchedListings = [],
     isLoading,
@@ -56,7 +56,7 @@ export default function AllListings({ searchResults = [] }) {
           <div className="listingCard">
             <div className="cardImageWrapper">
               <img
-                src={listing.image.url}
+                src={listing.image[0]?.url}
                 alt={listing.title}
                 className="cardImage"
               />

@@ -1,0 +1,34 @@
+/* BookingManagement.css */
+.booking-management {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 24px;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #234e8c;
+}
+
+.booking-stats {
+    display: flex;
+    gap: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.chart-placeholder,
+.map-placeholder {
+    background: #f4f6fa;
+    color: #888;
+    border-radius: 8px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}

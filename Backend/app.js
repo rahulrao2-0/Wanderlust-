@@ -15,6 +15,7 @@ import authRoutes     from "./routes/auth.js";
 import listingRoutes  from "./routes/listing.js";
 import bookingRoutes  from "./routes/booking.js";
 import hostRoutes     from "./routes/host.js";
+import adminRoutes    from "./routes/admin.js";
 import { authMiddleware } from "./middleware/authValidate.js";
 import User           from "./models/user.js";
 import Host           from "./models/host.js";
@@ -41,7 +42,10 @@ const upload = multer({ dest: "uploads/" });
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -85,7 +89,7 @@ app.get("/api/search", async (req, res,next) => {
 app.post(
   "/api/addListing",
   authMiddleware,
-  upload.single("image"),           
+  upload.array("images",4),           
   async (req, res) => {
      const response = await geocodingClient.forwardGeocode({
      query: `${req.body.location.trim()}, ${req.body.country.trim()}`,
@@ -100,12 +104,28 @@ app.post(
      console.log("Geocoding response:", response.body.features[1].geometry);
     try {
       console.log("Body :", req.body);
-      console.log("File :", req.file);
+      console.log("File :", req.files);
 
       
-      if (!req.file) {
+      if (!req.files || req.files.length === 0){
         return res.status(400).json({ error: "Image file is required" });
       }
+      const uploadedImages = [];
+
+      for (let file of req.files) {
+      const cloudResult = await cloudinary.uploader.upload(file.path, {
+        folder: "listings",
+        transformation: [{ width: 800, height: 600, crop: "limit", quality: "auto" }],
+      });
+
+      console.log("Cloudinary upload result:", cloudResult);
+
+      uploadedImages.push({
+        url: cloudResult.secure_url,
+        public_id: cloudResult.public_id
+      });
+      }
+
 
       
       const { title, description, price, location, country,
@@ -114,18 +134,18 @@ app.post(
       if (!title || !description || !price || !location || !country ||
           !host  || !hotelDetails || !hotelRules) {
         
-        fs.unlink(req.file.path, () => {});
+        req.files.forEach(file => fs.unlink(file.path, () => {}));
         return res.status(400).json({ error: "Please fill in all required fields" });
       }
 
       
-      const cloudResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: "listings",
-        transformation: [{ width: 1200, height: 800, crop: "limit", quality: "auto" }],
-      });
+      if (req.files.length > 4) {
+        req.files.forEach(file => fs.unlink(file.path, () => {}));
+        return res.status(400).json({ error: "Maximum 4 images allowed" });
+      }
 
       
-      fs.unlink(req.file.path, () => {});
+      req.files.forEach(file => fs.unlink(file.path, () => {}));
 
      
       let parsedHost, parsedHotelDetails, parsedAmenities, parsedHotelRules;
@@ -147,10 +167,7 @@ app.post(
       const listing = new Listing({
         title      : title.trim(),
         description: description.trim(),
-        image: {
-          url     : cloudResult.secure_url,
-          filename: cloudResult.public_id,
-        },
+        image: uploadedImages,
         price  : parseFloat(price),
         location: location.trim(),
         country : country.trim(),
@@ -238,6 +255,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api",      listingRoutes);
 app.use("/api",      bookingRoutes);
 app.use("/api",      hostRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 app.use((err, req, res, next) => {

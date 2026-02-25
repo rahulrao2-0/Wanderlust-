@@ -77,12 +77,12 @@ export default function Navbar() {
       <h2><i className="fa-regular fa-compass"></i>WanderLust</h2>
 
       <div className='tagDiv'>
-        {user? (<>
-        <a href="/host" onClick={(e) => {
-          e.preventDefault();
-          navigate("/host");
-        }}>Become a Host</a>
-        </>):(<></>)}
+        {user ? (<>
+          <a href="/host" onClick={(e) => {
+            e.preventDefault();
+            navigate("/host");
+          }}>Become a Host</a>
+        </>) : (<></>)}
         {!user ? (<>
           <a href="/signup" onClick={(e) => {
             e.preventDefault();

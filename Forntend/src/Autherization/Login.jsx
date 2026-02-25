@@ -15,13 +15,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { useAuth } from "../PropertyDetails/AuthContext";
 import "./Login.css"
-import Navbar from "../Home/Navbar";  
+import Navbar from "../Home/Navbar";
 export default function Login() {
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { user, setUser ,checkAuth } = useAuth()
+  const { user, setUser, checkAuth } = useAuth()
 
   const [signupData, setSignupData] = useState({
     name: "",
@@ -70,7 +70,7 @@ export default function Login() {
       console.log(result.user)
       if (result.success) {
         await checkAuth()
-        navigate("/")
+        navigate("/", { replace: true })
       } else {
         return setError(result.message)
       }
@@ -95,108 +95,108 @@ export default function Login() {
 
   return (
     <>
-    <Navbar />
-    <br />
-    <br />
-    <br />
-    <Box
-      component="form"
-      onSubmit={handleSignup}
-      sx={{
-        width: 350,
-        margin: "50px auto",
-        padding: 4,
-        boxShadow: 3,
-        borderRadius: 2,
-        backgroundColor: "background.paper",
-      }}
-      noValidate
-    >
-      <Typography variant="h5" textAlign="center" mb={2}>
-        Log-In
-      </Typography>
-
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-
-      <TextField
-        required
-        label="Username"
-        name="name"
-        variant="standard"
-        fullWidth
-        value={signupData.name}
-        onChange={handleSignupData}
-      />
-
-      <TextField
-        required
-        label="Email"
-        name="email"
-        type="email"
-        variant="standard"
-        fullWidth
-        value={signupData.email}
-        onChange={handleSignupData}
-        sx={{ mt: 2 }}
-      />
-
-      <TextField
-        required
-        label="Password"
-        name="password"
-        type={showPassword ? "text" : "password"}
-        variant="standard"
-        fullWidth
-        value={signupData.password}
-        onChange={handleSignupData}
-        sx={{ mt: 2 }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => setShowPassword((prev) => !prev)}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
+      <Navbar />
+      <br />
+      <br />
+      <br />
+      <Box
+        component="form"
+        onSubmit={handleSignup}
+        sx={{
+          width: 350,
+          margin: "50px auto",
+          padding: 4,
+          boxShadow: 3,
+          borderRadius: 2,
+          backgroundColor: "background.paper",
         }}
-      />
-      {/* ROLE CHECKBOXES */}
-      <FormLabel sx={{ mt: 3, display: "block" }}>Register as</FormLabel>
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={signupData.role === "user"}
-            onChange={() => handleRoleChange("user")}
-          />
-        }
-        label="User"
-      />
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={signupData.role === "host"}
-            onChange={() => handleRoleChange("host")}
-          />
-        }
-        label="Host"
-      />
-
-      <Button
-        type="submit"
-        variant="contained"
-        color="success"
-        fullWidth
-        sx={{ mt: 3 }}
-        disabled={isSubmitting}
+        noValidate
       >
-        {isSubmitting ? "Logging...." : "Log-In"}
-      </Button>
-    </Box>
+        <Typography variant="h5" textAlign="center" mb={2}>
+          Log-In
+        </Typography>
+
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+        <TextField
+          required
+          label="Username"
+          name="name"
+          variant="standard"
+          fullWidth
+          value={signupData.name}
+          onChange={handleSignupData}
+        />
+
+        <TextField
+          required
+          label="Email"
+          name="email"
+          type="email"
+          variant="standard"
+          fullWidth
+          value={signupData.email}
+          onChange={handleSignupData}
+          sx={{ mt: 2 }}
+        />
+
+        <TextField
+          required
+          label="Password"
+          name="password"
+          type={showPassword ? "text" : "password"}
+          variant="standard"
+          fullWidth
+          value={signupData.password}
+          onChange={handleSignupData}
+          sx={{ mt: 2 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        {/* ROLE CHECKBOXES */}
+        <FormLabel sx={{ mt: 3, display: "block" }}>Register as</FormLabel>
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={signupData.role === "user"}
+              onChange={() => handleRoleChange("user")}
+            />
+          }
+          label="User"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={signupData.role === "host"}
+              onChange={() => handleRoleChange("host")}
+            />
+          }
+          label="Host"
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="success"
+          fullWidth
+          sx={{ mt: 3 }}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Logging...." : "Log-In"}
+        </Button>
+      </Box>
     </>
   );
 }

@@ -10,6 +10,7 @@ import AddListing from "./HostDashboard/AddListing";
 import Settings from "./HostDashboard/Settings";
 import OTP from "./Autherization/OTP";
 import NotFound from "./NotFound";
+import AdminDashboard from "./AdminPannel/AdminDashboard";
 function App() {
   return (
     <Routes>
@@ -24,6 +25,8 @@ function App() {
       <Route path="/settings" element={<Settings/>} />
       <Route path="/otp" element={<OTP/>} />
       <Route path="*" element={<NotFound />} /> 
+      <Route path="/admin" element={<AdminDashboard />} /> 
+
 
     </Routes>
   );
