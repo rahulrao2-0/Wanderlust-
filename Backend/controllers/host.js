@@ -4,6 +4,7 @@ import Listing from "../models/listing.js";
 import Booking from "../models/booking.js";
 import { startSession } from "mongoose";
 import sendEmail from "../utils/sendEmails.js";
+import User from "../models/user.js";
 export const hostDetailsSave = async (req, res,next) => {
   try {
     // 🔑 logged-in user id (from JWT)
@@ -16,6 +17,14 @@ export const hostDetailsSave = async (req, res,next) => {
     }
 
     // Create host profile
+
+    const user = await User.findByIdAndUpdate(
+     userId,
+    {    $addToSet: { role: "host" } }, // adds only if not already exists
+    { new: true }
+   );
+
+    console.log(user)
     const host = await Host.create({
       user: userId,              // 👈 THIS LINE IS THE KEY
       name: req.body.name,

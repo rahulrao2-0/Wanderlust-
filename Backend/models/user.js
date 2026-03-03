@@ -17,11 +17,11 @@ const userSchema = new mongoose.Schema({
         required:true,
         minlength:6
     },
-    role:{
+    role:[{
         type:String,
         enum:["user","host","admin"],
         default:"user"
-    },
+    }]  ,
     isVerified: {
     type: Boolean,
     default: false

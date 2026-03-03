@@ -76,7 +76,7 @@ export default function Reservations() {
 
               {/* IMAGE */}
               <img
-                src={r.listing?.image?.url}
+                src={r.listing?.image[0]?.url}
                 alt={r.listing?.title}
                 className="listing-image"
               />

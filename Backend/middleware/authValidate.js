@@ -15,3 +15,13 @@ export const authMiddleware = (req, res, next) => {
   req.user = decoded; // { id, role }
   next();
 };
+
+const adminMiddleware = (req, res, next) => {
+  if (!req.user.role || !req.user.role.includes("admin")) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  next();
+};
+
+export { adminMiddleware };

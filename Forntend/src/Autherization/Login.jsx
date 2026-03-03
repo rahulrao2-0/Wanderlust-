@@ -1,55 +1,67 @@
 import "./Signup.css";
+import "./Login.css";
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Checkbox from "@mui/material/Checkbox";
+
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
-import { useAuth } from "../PropertyDetails/AuthContext";
-import "./Login.css"
+
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 import Navbar from "../Home/Navbar";
+import { useAuth } from "../PropertyDetails/AuthContext";
+
 export default function Login() {
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
+  const { checkAuth } = useAuth();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { user, setUser, checkAuth } = useAuth()
 
-  const [signupData, setSignupData] = useState({
+  const [loginData, setLoginData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "user",
+    role: "user",   // ✅ default role
   });
+
+  // Handle role change
   const handleRoleChange = (role) => {
-    setSignupData((prev) => ({
+    console.log("Selected Role:", role); // Debugging line
+    setLoginData((prev) => ({
       ...prev,
       role,
     }));
   };
 
   // Handle input change
-  const handleSignupData = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSignupData((prev) => ({
+    setLoginData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  // Handle signup
-  const handleSignup = async (e) => {
+  // Handle login
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!signupData.name || !signupData.email || !signupData.password) {
+    if (!loginData.name || !loginData.email || !loginData.password) {
       setError("All fields are required!");
       return;
     }
@@ -62,30 +74,29 @@ export default function Login() {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(signupData),
+        body: JSON.stringify(loginData),
       });
 
       const result = await response.json();
       console.log(result);
-      console.log(result.user)
+      
+
       if (result.success) {
-        await checkAuth()
-        navigate("/", { replace: true })
+        await checkAuth();
+        navigate("/", { replace: true });
       } else {
-        return setError(result.message)
+        setError(result.message);
       }
 
-
-
       // Reset form
-      setSignupData({
+      setLoginData({
         name: "",
         email: "",
         password: "",
         role: "user",
       });
-    }
-    catch (err) {
+
+    } catch (err) {
       console.error(err);
       setError("Network error. Please try again.");
     } finally {
@@ -96,12 +107,11 @@ export default function Login() {
   return (
     <>
       <Navbar />
-      <br />
-      <br />
-      <br />
+      <br /><br /><br />
+
       <Box
         component="form"
-        onSubmit={handleSignup}
+        onSubmit={handleLogin}
         sx={{
           width: 350,
           margin: "50px auto",
@@ -124,8 +134,8 @@ export default function Login() {
           name="name"
           variant="standard"
           fullWidth
-          value={signupData.name}
-          onChange={handleSignupData}
+          value={loginData.name}
+          onChange={handleInputChange}
         />
 
         <TextField
@@ -135,8 +145,8 @@ export default function Login() {
           type="email"
           variant="standard"
           fullWidth
-          value={signupData.email}
-          onChange={handleSignupData}
+          value={loginData.email}
+          onChange={handleInputChange}
           sx={{ mt: 2 }}
         />
 
@@ -147,8 +157,8 @@ export default function Login() {
           type={showPassword ? "text" : "password"}
           variant="standard"
           fullWidth
-          value={signupData.password}
-          onChange={handleSignupData}
+          value={loginData.password}
+          onChange={handleInputChange}
           sx={{ mt: 2 }}
           InputProps={{
             endAdornment: (
@@ -163,28 +173,20 @@ export default function Login() {
             ),
           }}
         />
-        {/* ROLE CHECKBOXES */}
-        <FormLabel sx={{ mt: 3, display: "block" }}>Register as</FormLabel>
 
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={signupData.role === "user"}
-              onChange={() => handleRoleChange("user")}
-            />
-          }
-          label="User"
-        />
+        {/* ROLE SELECTION */}
+        <FormLabel sx={{ mt: 3, display: "block" }}>
+          Login as
+        </FormLabel>
 
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={signupData.role === "host"}
-              onChange={() => handleRoleChange("host")}
-            />
-          }
-          label="Host"
-        />
+        <RadioGroup
+          value={loginData.role}
+          onChange={(e) => handleRoleChange(e.target.value)}
+        >
+          <FormControlLabel value="user" control={<Radio />} label="User" />
+          <FormControlLabel value="host" control={<Radio />} label="Host" />
+          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+        </RadioGroup>
 
         <Button
           type="submit"
@@ -194,8 +196,9 @@ export default function Login() {
           sx={{ mt: 3 }}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Logging...." : "Log-In"}
+          {isSubmitting ? "Logging..." : "Log-In"}
         </Button>
+
       </Box>
     </>
   );

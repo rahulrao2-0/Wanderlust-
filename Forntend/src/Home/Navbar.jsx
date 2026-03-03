@@ -51,6 +51,9 @@ export default function Navbar() {
   const handleMyProfile = () => {
     navigate("/host/dashboard")
   }
+  const handleAdminProfile = () => {
+    navigate("/admin")
+  }
   const logout = async () => {
     try {
       const result = await fetch("http://localhost:5000/api/auth/logout", {
@@ -166,6 +169,21 @@ export default function Navbar() {
                       H
                     </Avatar>
                     My Profile
+                  </MenuItem></>) : (<></>)}
+                  {user?.user?.role?.includes("admin") ? (
+                <>
+                  <MenuItem onClick={handleAdminProfile} sx={{ fontWeight: 500 }}>
+                    <Avatar sx={{
+                      mr: 1.5,
+                      width: 32,
+                      height: 32,
+                      background: 'linear-gradient(135deg, #27ae60 0%, #229954 100%)',
+                      fontSize: '0.85rem',
+                      color: 'white'
+                    }}>
+                      H
+                    </Avatar>
+                    Admin Dashboard
                   </MenuItem></>) : (<></>)}
 
               <Divider />

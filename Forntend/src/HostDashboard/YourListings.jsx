@@ -69,7 +69,7 @@ export default function YourListings() {
             <CardMedia
               component="img"
               height="180"
-              image={listing?.image?.url}
+              image={listing?.image[0]?.url}
               alt={listing.title}
               className="listing-image"
             />

@@ -131,3 +131,14 @@
     align-items: flex-start;
   }
 }
+@media (max-width: 468px) {
+  .reservation-card-new {
+    /* grid-template-columns: 1fr; */
+     grid-column: 1 / -1; 
+  }
+
+  .right {
+    align-items: flex-start;
+    grid-column: 1 / -1;  
+  }
+}

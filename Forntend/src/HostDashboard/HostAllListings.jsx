@@ -80,7 +80,7 @@ export default function HostAllListings() {
     return <div className="loadingState">Loading listings...</div>;
 
   if (error) return <div className="errorState">Error: {error.message}</div>;
-
+  // console.log("Fetched Listings:", listings); // Debugging line
   return (
     <div className="hostListingsContainer">
       <div className="listingsGrid">
@@ -88,7 +88,7 @@ export default function HostAllListings() {
           <div key={listing._id} className="listingCard">
             <div className="cardImageWrapper">
               <img
-                src={listing.image?.url}
+                src={listing.image[0]?.url}
                 alt={listing.title}
                 className="cardImage"
               />

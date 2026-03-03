@@ -31,7 +31,7 @@ export const signup = async (req, res,next) => {
 
     // const token = createToken(user);
     
-    await sendEmail({
+    const EmailResult = await sendEmail({
       to: user.email,
       subject: "Verify your email",
       html: `
@@ -42,6 +42,7 @@ export const signup = async (req, res,next) => {
       `
     });
     
+    console.log("Email sent:", EmailResult);
 
     // res.cookie("token", token, {
     //   httpOnly: true,
@@ -106,15 +107,33 @@ export const verifyEmail = async (req, res, next) => {
 
 export const login = async (req, res,next) => {
   try {
-    const { email, password } = req.body;
-    console.log(email,password)
+    const { email, password, role } = req.body;
+    console.log(email,password,role)
 
     const user = await User.findOne({ email });
-    console.log(user.name)
+    console.log(user)
     if (!user) {
       next(new ExpressError(409,"User not found"))
     }
-    console.log(user)
+    if (!user.role.includes(role)) {
+      return next(new ExpressError(403,"Unauthorized: Role mismatch"))
+    }
+    if(!user.isVerified){
+      const Otp = Math.floor(100000 + Math.random() * 900000).toString();
+      console.log(Otp)
+      await sendEmail({
+      to: user.email,
+      subject: "Verify your email",
+      html: `
+        <h2>Welcome to WanderLust</h2>
+        <p>Click below to verify your email:</p>
+        <h2>Verification-otp${Otp}</h2>
+        <p>This OTP will expire in 10 minutes.</p>
+      `
+    });
+      return next(new ExpressError(401, "Please verify your email to login"));
+    }
+    
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {

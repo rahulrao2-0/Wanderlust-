@@ -12,6 +12,9 @@ const getAdminStats = async (req, res) => {
     const lastMonthBookings = await Booking.find({
     createdAt: { $gte: last30Days }
     }).sort({ createdAt: -1 });
+    const AllListings = await Listing.find();
+    const AllUsers = await User.find();
+    const AllBookings = await Booking.find();
     const totalUsers = await User.countDocuments();
     const totalListings = await Listing.countDocuments();
     const totalBookings = await Booking.countDocuments();
@@ -58,7 +61,10 @@ const getAdminStats = async (req, res) => {
       latestListings: latestListings,
       latestBookings: lastMonthBookings,
       latestUsers: latestUsers,
-      last7Daysbookings: last7Daysbookings
+      last7Daysbookings: last7Daysbookings,
+      AllListings,
+      AllUsers,
+      AllBookings
     });
   } catch (err) {
     console.error(err);

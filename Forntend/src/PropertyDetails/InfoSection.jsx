@@ -75,6 +75,10 @@ export default function InfoSection() {
         setCheckOutValue(null);
         setGuests("");
         return;
+      }else if(data.error === "Please verify your email to book a property"){
+        alert("Booking failed: " + (data.error || "Please verify your email to book a property"));
+        navigate("/login")
+        return;
       }
       if (data.success) {
         console.log("Success:", data);
