@@ -1,17 +1,15 @@
-import sgMail from "@sendgrid/mail";
+import { Resend } from "resend";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const msg = {
+    await resend.emails.send({
+      from: "WanderLust <onboarding@resend.dev>",
       to,
-      from: "raoshabrahul86@gmail.com", // your verified sender email
       subject,
       html
-    };
-
-    await sgMail.send(msg);
+    });
     console.log("✅ Email sent successfully");
     return true;
   } catch (err) {
