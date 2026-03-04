@@ -94,8 +94,9 @@ export const verifyEmail = async (req, res, next) => {
     });
 
   } catch (err) {
-    next(err);
-  }
+  console.log("REAL ERROR:", err);
+  next(new ExpressError(500, "Signup Failed"));
+}
 };
 
 export const login = async (req, res, next) => {
@@ -158,9 +159,9 @@ export const login = async (req, res, next) => {
     });
 
   } catch (err) {
-    console.log("REAL LOGIN ERROR:", err);
-    next(new ExpressError("Login Failed", 500));
-  }
+  console.log("REAL LOGIN ERROR:", err);
+  next(new ExpressError(500, "Login Failed"));
+}
 };
 
 export const logout = (req, res) => {
