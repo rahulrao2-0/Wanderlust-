@@ -1,5 +1,11 @@
+.reviewBox{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
 .reviewCard {
-    max-width: 500px;
+    max-width: 300px;
     border-radius: 14px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     padding: 18px;

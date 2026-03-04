@@ -79,7 +79,11 @@ export default function Login() {
 
       const result = await response.json();
       console.log(result);
-      
+      if(response.status === 401){
+        setError("Invalid credentials. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
 
       if (result.success) {
         await checkAuth();

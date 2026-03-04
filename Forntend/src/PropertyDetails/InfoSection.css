@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+
 .infoContainer {
   display: flex;
   gap: 40px;
@@ -17,7 +19,7 @@
 
 .descriptionDiv hr {
   border: none;
-  border-top: 1px solid #ffffff;
+  border-top: 1px solid #f0f0f0;
   margin: 0;
 }
 
@@ -27,7 +29,6 @@
   flex-direction: column;
   gap: 6px;
 }
-
 .hostNameDiv span {
   font-size: 1rem;
   color: #333;
@@ -44,7 +45,6 @@
   flex-wrap: wrap;
   gap: 10px;
 }
-
 .hotelDetails span {
   background: #f5f5f5;
   border-radius: 20px;
@@ -69,7 +69,6 @@
   gap: 8px;
   align-items: center;
 }
-
 .amenities p {
   width: 100%;
   font-weight: 600;
@@ -77,7 +76,6 @@
   margin: 0 0 4px;
   color: #222;
 }
-
 .amenities span {
   background: #fff3f3;
   border: 1px solid #ffcdd2;
@@ -93,28 +91,25 @@
   flex-direction: column;
   gap: 6px;
 }
-
 .hotelRules p {
   font-weight: 600;
   font-size: 1rem;
   margin: 0 0 4px;
   color: #222;
 }
-
 .hotelRules span {
   font-size: 1rem;
   font-weight: 500;
   color: #444;
 }
 
-/* ── Right: Reservation Card ─────────────────────────────────────────────── */
+/* ── Right: Reservation Card (desktop) ──────────────────────────────────── */
 .check-inDiv {
   width: 320px;
   flex-shrink: 0;
   position: sticky;
   top: 100px;
 }
-
 .reservationDiv {
   border: 1px solid #e0e0e0;
   border-radius: 16px;
@@ -125,36 +120,29 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   background: #fff;
 }
-
 .price span {
   font-size: 1.4rem;
   font-weight: 700;
   color: #222;
 }
-
 .reservationDiv label {
   font-size: 0.85rem;
   font-weight: 600;
   color: #555;
   margin-bottom: -8px;
 }
-
 .check-In,
 .check-out {
   width: 100%;
 }
-
-/* Make MUI DatePicker full width */
 .check-In .MuiFormControl-root,
 .check-out .MuiFormControl-root {
   width: 100%;
 }
-
 .guests .MuiFormControl-root {
   margin: 0 !important;
   width: 100%;
 }
-
 .reserveButton {
   width: 100% !important;
   padding: 10px 0 !important;
@@ -162,39 +150,268 @@
   border-radius: 10px !important;
   margin-top: 4px;
 }
-.ReviewMapDiv {
+
+/* ── Mobile: hide desktop card, show sticky bar ───────────────────────────*/
+.mobileReserveBar {
+  display: none;
+}
+
+/* ── Review Section ──────────────────────────────────────────────────────── */
+.ReviewDiv {
   display: flex;
-  justify-content: space-between;  /* creates 10% gap automatically */
+  gap: 32px;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
   align-items: flex-start;
-  width: 100%;
+}
+
+.Review {
+  flex: 1;
+  min-width: 0;
+}
+.Review h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e8e8e8;
+  letter-spacing: -0.3px;
+}
+
+.reviewScrollArea {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: #e0e0e0 transparent;
+}
+.reviewScrollArea::-webkit-scrollbar { width: 4px; }
+.reviewScrollArea::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.submitReviewDiv {
+  width: 310px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 100px;
+}
+.reviewFormCard {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.reviewFormCard h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+.ratingRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ratingRow label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Map */
+.propertylocation {
+  text-align: center;
+  color: #333;
+  margin: 12px 0 4px;
+}
+.ReviewMapDiv {
+  max-width: 1100px;
+  margin: 0 auto 40px;
+  padding: 0 16px;
 }
 .mapContainer {
-  width: 60%;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
-
-.reviewContainer {
-  width: 30%;
-}
-@media (max-width: 768px) {
-  .ReviewMapDiv {
-    flex-direction: column;
-  }
-
-  .mapContainer,
-  .reviewContainer {
-    width: 100%;
-  }
-}
-
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+
+  /* Push content up from behind the sticky bar */
   .infoContainer {
     flex-direction: column;
+    padding-bottom: 88px;
   }
 
+  /* Hide the desktop reservation sidebar */
   .check-inDiv {
+    display: none;
+  }
+
+  /* ── Sticky bottom reserve bar ── */
+  .mobileReserveBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #fff;
+    border-top: 1px solid #ebebeb;
+    padding: 12px 24px 24px; /* extra bottom for iOS home indicator */
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.09);
+  }
+
+  .mobileReserveBar__price {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mobileReserveBar__price .priceAmount {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .mobileReserveBar__price .priceLabel {
+    font-size: 0.78rem;
+    color: #717171;
+  }
+
+  .mobileReserveBar__btn {
+    background: linear-gradient(135deg, #e53935, #c62828) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 13px 36px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0.2px !important;
+    box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35) !important;
+    white-space: nowrap;
+  }
+  .mobileReserveBar__btn:disabled {
+    background: #ccc !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Slide-up booking form overlay ── */
+  .mobileBookingOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.45);
+    animation: mbFadeIn 0.2s ease;
+  }
+  @keyframes mbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .mobileBookingForm {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    padding: 20px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.15);
+    animation: mbSlideUp 0.3s cubic-bezier(0.34, 1.1, 0.64, 1);
+  }
+  @keyframes mbSlideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .mobileBookingForm__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mobileBookingForm__header h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  .mobileBookingForm__close {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobileBookingForm label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #717171;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .mobileBookingForm .check-In .MuiFormControl-root,
+  .mobileBookingForm .check-out .MuiFormControl-root,
+  .mobileBookingForm .guests .MuiFormControl-root {
+    width: 100%;
+    margin: 0 !important;
+  }
+  .mobileBookingForm__confirmBtn {
+    background: linear-gradient(135deg, #e53935, #c62828) !important;
+    color: #fff !important;
+    border-radius: 50px !important;
+    padding: 14px 0 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35) !important;
+  }
+
+  .ReviewDiv {
+    flex-direction: column;
+    padding-bottom: 88px;
+  }
+  .submitReviewDiv {
     width: 100%;
     position: static;
+  }
+  .ReviewMapDiv {
+    padding-bottom: 88px;
+  }
+  .mapContainer {
+    width: 100%;
   }
 }

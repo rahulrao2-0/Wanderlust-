@@ -50,7 +50,7 @@ const Mapb = ({ coordinates }) => {
   return (
     <div
       ref={mapContainerRef}
-      style={{ maxWidth: "800px", minWidth: "300px", height: "500px", minHeight: "300px", borderRadius:"10px", margin:"0 auto" }}
+      style={{ maxWidth: "1200px", minWidth: "300px", height: "500px", minHeight: "300px", borderRadius:"10px", margin:"0 auto" }}
     />
   );
 };

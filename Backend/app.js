@@ -26,6 +26,7 @@ import mbxTilesets from "@mapbox/mapbox-sdk/services/tilesets.js";
 import mapboxSdk from "@mapbox/mapbox-sdk";
 import ExpressError from "./ExpressError.js";
 import OpenAI from "openai";
+import reviewRoutes from "./routes/review.js";
 const mapboxClient = mapboxSdk({
   accessToken: process.env.MAP_TOKEN,
 });
@@ -256,6 +257,7 @@ app.use("/api",      listingRoutes);
 app.use("/api",      bookingRoutes);
 app.use("/api",      hostRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api", reviewRoutes);
 
 
 app.use((err, req, res, next) => {
