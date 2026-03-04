@@ -53,7 +53,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wanderlustReact")
+
+  .connect("mongodb+srv://yadavrahul81135_db_user:aqHAMg1mJ32yrqKZ@cluster0.5so9v6p.mongodb.net/?appName=Cluster0")
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
