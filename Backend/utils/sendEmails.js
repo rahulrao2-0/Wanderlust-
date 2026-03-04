@@ -1,31 +1,22 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    // 👇 verify connection with Gmail
-    await transporter.verify();
-    console.log("✅ Email transporter verified");
-
-    const info = await transporter.sendMail({
-      from: `"WanderLust" <${process.env.EMAIL_USER}>`,
+    const msg = {
       to,
+      from: "raoshabrahul86@gmail.com", // your verified sender email
       subject,
       html
-    });
+    };
 
-    console.log("✅ Email sent:", info.messageId);
+    await sgMail.send(msg);
+    console.log("✅ Email sent successfully");
     return true;
   } catch (err) {
     console.error("❌ Email error:", err.message);
-    throw err; // VERY IMPORTANT
+    throw err;
   }
 };
 
