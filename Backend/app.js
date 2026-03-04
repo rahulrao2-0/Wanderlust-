@@ -44,7 +44,7 @@ const upload = multer({ dest: "uploads/" });
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: ["https://wanderlust-bt2k.vercel.app/"],
   credentials: true
 }));
 app.use(express.json());
