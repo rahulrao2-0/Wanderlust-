@@ -60,8 +60,10 @@ export const signup = async (req, res,next) => {
       },
     });
   } catch (err) {
-    next(new ExpressError(500,"Signup Failed"))
-  }
+   console.log("REAL ERROR:", err);
+   throw new ExpressError("Signup Failed", 500);
+ }
+
 };
 export const verifyEmail = async (req, res, next) => {
   try {
@@ -158,9 +160,11 @@ export const login = async (req, res,next) => {
         role: user.role,
       },
     });
-  } catch (err) {
-    next(new ExpressError(500,"Login Failed"))
-  }
+  }catch (err) {
+   console.log("REAL LOGIN ERROR:", err);
+   throw new ExpressError("Login Failed", 500);
+}
+
 };
 
 export const logout = (req, res) => {
