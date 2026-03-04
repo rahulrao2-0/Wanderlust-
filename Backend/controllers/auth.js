@@ -92,7 +92,7 @@ export const verifyEmail = async (req, res, next) => {
     res.cookie("token", JWTtoken, {
     httpOnly: true,
     secure: true,          // must be true for HTTPS
-    sameSite: "lax",      // must be none for cross-site
+    sameSite: "none",      // must be none for cross-site
     maxAge: 24 * 60 * 60 * 1000
     });
 
@@ -145,11 +145,12 @@ export const login = async (req, res,next) => {
     const token = createToken(user);
 
     res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,          // REQUIRED for https
-    sameSite: "lax",      // VERY IMPORTANT
-   maxAge: 24 * 60 * 60 * 1000
-   });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",   // ✅ MUST be none
+  maxAge: 24 * 60 * 60 * 1000
+  });
+
 
     res.json({
       success: true,
