@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Rating from "@mui/material/Rating";
 
 const fetchListings = async () => {
-  const res = await fetch("http://localhost:5000/api/listings", {
+  const res = await fetch("https://wanderlust-cpfz.onrender.com/api/listings", {
     credentials: "include",
   });
 

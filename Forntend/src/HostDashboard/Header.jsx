@@ -40,7 +40,7 @@ export default function Header({ User }) {
   }
   const logout = async () => {
     try {
-      const result = await fetch("http://localhost:5000/api/auth/logout", {
+      const result = await fetch("https://wanderlust-cpfz.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });

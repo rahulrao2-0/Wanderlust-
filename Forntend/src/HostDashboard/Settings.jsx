@@ -14,7 +14,7 @@ export default function Settings() {
     if (confirm) {
       console.log("delete account");
       try {
-        const result = await fetch("http://localhost:5000/api/deleteAccount", {
+        const result = await fetch("https://wanderlust-cpfz.onrender.com/api/deleteAccount", {
           method: "DELETE",
           credentials: "include"
         })

@@ -4,7 +4,7 @@ import PropertyDetails from "./PropertyDetails/PropertyDetails";
 import Login from "./Autherization/Login";
 import Signup from "./Autherization/Signup";
 import Host from "./Host";
-import MainHostDashboard from "./HostDashboard/mainHostDashboard";
+import MainHostDashboard from "./HostDashboard/MainHostDashboard";
 import AddListing from "./HostDashboard/AddListing";
 
 import Settings from "./HostDashboard/Settings";

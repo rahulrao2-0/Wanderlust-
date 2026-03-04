@@ -13,7 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const fetchlistings = async () => {
   const res = await fetch(
-    "http://localhost:5000/api/host/yourListings",
+    "https://wanderlust-cpfz.onrender.com/api/host/yourListings",
     {
       method: "GET",
       credentials: "include",

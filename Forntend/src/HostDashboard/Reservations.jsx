@@ -19,7 +19,7 @@ export default function Reservations() {
         setError(null);
 
         const res = await fetch(
-          `http://localhost:5000/api/reservations/${hostId}`,
+          `https://wanderlust-cpfz.onrender.com/api/reservations/${hostId}`,
           {
             method: "GET",
             credentials: "include",
@@ -44,7 +44,7 @@ export default function Reservations() {
   // ⭐ update booking status
   const updateStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:5000/api/reservations/${id}`, {
+      await fetch(`https://wanderlust-cpfz.onrender.com/api/reservations/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

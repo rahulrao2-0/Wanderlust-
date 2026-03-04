@@ -39,7 +39,7 @@ export default function InfoSection() {
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/reviews/property/${property?._id}`,
+        `https://wanderlust-cpfz.onrender.com/api/reviews/property/${property?._id}`,
         {
           method: "GET",
           credentials: "include",
@@ -67,7 +67,7 @@ export default function InfoSection() {
     try {
       const reviewData = { propertyId: property?._id, rating, comment: review };
       const response = await fetch(
-        `http://localhost:5000/api/reviews/${userId}`,
+        `https://wanderlust-cpfz.onrender.com/api/reviews/${userId}`,
         {
           method: "POST",
           credentials: "include",
@@ -77,16 +77,18 @@ export default function InfoSection() {
       );
       const data = await response.json();
       if (data.message) {
-        alert("Failed to submit review: " + data.message);
+        alert( data.message);
         return;
       }
-      setRating(0);
-      setReview("");
-      await fetchReviews();
+      
+      
     } catch (err) {
       console.error("Error submitting review:", err);
       alert("Failed to submit review. Please try again.");
     } finally {
+      setRating(0);
+      setReview("");
+      await fetchReviews();
       setIsPostingReview(false);
     }
   };
@@ -112,7 +114,7 @@ export default function InfoSection() {
         guests,
       };
       const response = await fetch(
-        `http://localhost:5000/api/booking/${user.id}`,
+        `https://wanderlust-cpfz.onrender.com/api/booking/${user.id}`,
         {
           method: "POST",
           credentials: "include",
