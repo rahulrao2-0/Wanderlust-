@@ -90,6 +90,7 @@ export default function Signup() {
       <Box
         component="form"
         onSubmit={handleSignup}
+        className="signup-card"
         sx={{
           width: 350,
           margin: "50px auto",

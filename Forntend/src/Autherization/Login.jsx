@@ -1,5 +1,5 @@
-import "./Signup.css";
-import "./Login.css";
+
+
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import Navbar from "../Home/Navbar";
 import { useAuth } from "../PropertyDetails/AuthContext";
-
+import "./Login.css";
 export default function Login() {
 
   const navigate = useNavigate();
@@ -116,6 +116,7 @@ export default function Login() {
       <Box
         component="form"
         onSubmit={handleLogin}
+        className="login-card"
         sx={{
           width: 350,
           margin: "50px auto",
