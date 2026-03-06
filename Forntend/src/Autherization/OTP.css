@@ -1,181 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap');
+
+/* ── Root tokens (consistent with Login/Signup) ── */
+:root {
+  --red:        #e02b2b;
+  --red-hover:  #c41f1f;
+  --red-active: #a81a1a;
+  --red-glow:   rgba(224, 43, 43, 0.18);
+  --red-light:  rgba(224, 43, 43, 0.06);
+
+  --bg:         #f7f5f2;
+  --card:       #ffffff;
+  --border:     #e4e0db;
+  --label:      #8a8480;
+  --text:       #1a1816;
+  --muted:      #b0aba6;
+  --hint:       #c8c3be;
+
+  --radius:     14px;
+  --shadow:     0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 12px 48px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  --font-body:  'DM Sans', sans-serif;
+  --font-head:  'Playfair Display', serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Page ── */
+body {
+  background-color: var(--bg);
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Full-page centering wrapper ── */
 .otp-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #f5f7fa;
-    padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: var(--bg);
 }
 
+/* ── Card ── */
 .otp-card {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    max-width: 400px;
-    animation: slideUp 0.5s ease-out;
-    border: 1px solid #e8ecf1;
+  width: min(420px, 100%);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 44px 40px 36px;
+  text-align: center;
+  transition: box-shadow var(--transition);
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.otp-card:hover {
+  box-shadow: var(--shadow-lg);
 }
 
+/* ── Red accent bar at top ── */
+.otp-card::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  background: var(--red);
+  border-radius: 2px;
+  margin: 0 auto 28px;
+}
+
+/* ── Heading ── */
 .otp-card h2 {
-    text-align: center;
-    color: #2d3748;
-    margin-bottom: 10px;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+  font-family: var(--font-head);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
 }
 
+/* ── Sub-text ── */
 .otp-email {
-    text-align: center;
-    color: #718096;
-    font-size: 14px;
-    margin-bottom: 30px;
-    line-height: 1.5;
-    font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0 0 32px;
 }
 
+.otp-email strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── Form group ── */
 .otp-form-group {
-    margin-bottom: 25px;
+  text-align: left;
+  margin-bottom: 20px;
 }
 
 .otp-form-group label {
-    display: block;
-    color: #2d3748;
-    font-weight: 600;
-    margin-bottom: 10px;
-    font-size: 14px;
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
 }
 
+/* ── OTP input ── */
 .otp-input {
-    width: 100%;
-    padding: 14px;
-    font-size: 24px;
-    letter-spacing: 10px;
-    text-align: center;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    font-family: monospace;
-    font-weight: 600;
-    box-sizing: border-box;
-    background-color: #f8fafb;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-align: center;
+  color: var(--text);
+  background: var(--red-light);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+  -moz-appearance: textfield;
+}
+
+.otp-input::placeholder {
+  color: var(--hint);
+  letter-spacing: 0.3em;
 }
 
 .otp-input:focus {
-    outline: none;
-    border-color: #4a7ba7;
-    background-color: white;
-    box-shadow: 0 0 0 3px rgba(74, 123, 167, 0.1);
+  border-color: var(--red);
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--red-glow);
 }
 
 .otp-input:disabled {
-    background-color: #f5f7fa;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
+/* ── Hint text ── */
 .otp-hint {
-    font-size: 12px;
-    color: #a0aec0;
-    margin-top: 8px;
-    text-align: center;
-    font-weight: 500;
+  font-size: 0.78rem;
+  color: var(--hint);
+  margin: 6px 0 0;
+  text-align: center;
 }
 
+/* ── Error message ── */
 .otp-error {
-    background-color: #fef5f5;
-    border: 1px solid #fed7d7;
-    color: #c53030;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    text-align: center;
-    font-weight: 500;
+  background: rgba(224, 43, 43, 0.08);
+  border: 1px solid rgba(224, 43, 43, 0.25);
+  color: var(--red);
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  text-align: left;
 }
 
+/* ── Verify button ── */
 .otp-verify-btn {
-    width: 100%;
-    padding: 14px;
-    background: #4a7ba7;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 20px;
+  width: 100%;
+  background-color: var(--red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 0;
+  cursor: pointer;
+  box-shadow: 0 2px 10px var(--red-glow);
+  transition: background-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
 .otp-verify-btn:hover:not(:disabled) {
-    background: #3a5f80;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(74, 123, 167, 0.25);
+  background-color: var(--red-hover);
+  box-shadow: 0 4px 20px rgba(224, 43, 43, 0.32);
+  transform: translateY(-1px);
+}
+
+.otp-verify-btn:active:not(:disabled) {
+  background-color: var(--red-active);
+  transform: translateY(0);
 }
 
 .otp-verify-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  background-color: var(--border);
+  color: var(--muted);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
+/* ── Footer ── */
 .otp-footer {
-    text-align: center;
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
 }
 
 .otp-footer p {
-    color: #4a5568;
-    font-size: 14px;
-    margin: 0;
-    font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0;
 }
 
+/* ── Resend button ── */
 .otp-resend-btn {
-    background: none;
-    border: none;
-    color: #4a7ba7;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 0;
-    margin-left: 4px;
-    transition: color 0.3s ease;
-    text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--red);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition), opacity var(--transition);
 }
 
 .otp-resend-btn:hover:not(:disabled) {
-    color: #3a5f80;
+  color: var(--red-hover);
 }
 
 .otp-resend-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: none;
 }
 
+/* ── Responsive ── */
 @media (max-width: 480px) {
-    .otp-card {
-        padding: 30px 20px;
-    }
+  .otp-card {
+    padding: 36px 24px 28px;
+  }
 
-    .otp-card h2 {
-        font-size: 24px;
-    }
+  .otp-card h2 {
+    font-size: 1.4rem;
+  }
 
-    .otp-input {
-        font-size: 20px;
-        letter-spacing: 8px;
-    }
+  .otp-input {
+    font-size: 1.35rem;
+    letter-spacing: 0.28em;
+  }
 }
