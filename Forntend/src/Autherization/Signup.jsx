@@ -15,8 +15,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import { useAuth } from "../PropertyDetails/AuthContext";
 import Navbar from "../Home/Navbar";
+
 export default function Signup() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user, setUser } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -28,23 +29,16 @@ export default function Signup() {
     password: "",
     role: "user",
   });
+
   const handleRoleChange = (role) => {
-    setSignupData((prev) => ({
-      ...prev,
-      role,
-    }));
+    setSignupData((prev) => ({ ...prev, role }));
   };
 
-  // Handle input change
   const handleSignupData = (e) => {
     const { name, value } = e.target;
-    setSignupData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setSignupData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle signup
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -66,32 +60,22 @@ export default function Signup() {
 
       const result = await response.json();
       console.log(result);
+
       if (result.error) {
-        setError(result.error)
+        setError(result.error);
         setIsSubmitting(false);
         return;
       }
 
-
       if (result.success) {
-        alert("Signup successful! Please verify your email before logging in.");
-        navigate("/otp", { replace: true })
-
+        navigate("/otp", { state: { email: signupData.email }, replace: true });
       } else {
-        setError(result.message)
-
-
-        // Reset form
-        setSignupData({
-          name: "",
-          email: "",
-          password: "",
-          role: "user",
-        });
+        setError(result.message);
+        setSignupData({ name: "", email: "", password: "", role: "user" });
       }
     } catch (err) {
       console.error(err);
-      setError(result.message);
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -167,7 +151,7 @@ export default function Signup() {
             ),
           }}
         />
-        {/* ROLE CHECKBOXES */}
+
         <FormLabel sx={{ mt: 3, display: "block" }}>Register as</FormLabel>
 
         <FormControlLabel

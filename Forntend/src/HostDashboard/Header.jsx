@@ -78,13 +78,7 @@ export default function Header({ User }) {
               Add Listing
             </a>
 
-            <Button
-              variant="outlined"
-              endIcon={<KeyboardArrowDownIcon />}
-              className="switch-mode-btn"
-            >
-              Switch Mode
-            </Button>
+            
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tooltip title="Account settings">
