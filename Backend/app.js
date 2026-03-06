@@ -42,6 +42,7 @@ cloudinary.config({
 const upload = multer({ dest: "uploads/" });
 
 const app = express();
+export default app;
 
 app.use(cors({
   origin: ["https://wanderlust-ptk7.vercel.app"],
@@ -270,4 +271,3 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(5000, () => console.log("Server running on http://localhost:5000"));
