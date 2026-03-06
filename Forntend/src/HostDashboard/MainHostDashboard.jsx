@@ -44,9 +44,7 @@ export default function MainHostDashboard() {
                   <Grid item xs={12} lg={7}>
                     <YourListings />
                   </Grid>
-                  <Grid item xs={12} lg={5}>
-                    <UpcomingReservations />
-                  </Grid>
+                  
                 </Grid>
               </>
             )}
