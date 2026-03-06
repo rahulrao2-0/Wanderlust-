@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap');
+
+/* ── Root tokens (shared with Login.css) ── */
+:root {
+  --red:        #e02b2b;
+  --red-hover:  #c41f1f;
+  --red-active: #a81a1a;
+  --red-glow:   rgba(224, 43, 43, 0.18);
+
+  --bg:         #f7f5f2;
+  --card:       #ffffff;
+  --border:     #e4e0db;
+  --label:      #8a8480;
+  --text:       #1a1816;
+  --muted:      #b0aba6;
+
+  --radius:     14px;
+  --shadow:     0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 12px 48px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  --font-body:  'DM Sans', sans-serif;
+  --font-head:  'Playfair Display', serif;
+
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Page background ── */
+body {
+  background-color: var(--bg);
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Card wrapper ── */
+.signup-card {
+  width: min(380px, calc(100vw - 32px));
+  margin: 60px auto 40px;
+  padding: 40px 36px 36px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition);
+}
+
+.signup-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Heading ── */
+.signup-card .MuiTypography-h5 {
+  font-family: var(--font-head) !important;
+  font-size: 1.65rem !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+  letter-spacing: -0.01em;
+}
+
+/* ── Alert ── */
+.signup-card .MuiAlert-root {
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+}
+
+/* ── Text fields ── */
+.signup-card .MuiTextField-root {
+  margin-top: 8px;
+}
+
+.signup-card .MuiInput-root::before {
+  border-bottom: 1.5px solid var(--border) !important;
+}
+
+.signup-card .MuiInput-root::after {
+  border-bottom: 2px solid var(--red) !important;
+}
+
+.signup-card .MuiInputLabel-root {
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  color: var(--label) !important;
+  font-weight: 400;
+}
+
+.signup-card .MuiInputLabel-root.Mui-focused {
+  color: var(--red) !important;
+}
+
+.signup-card .MuiInputBase-input {
+  font-family: var(--font-body) !important;
+  font-size: 0.9rem !important;
+  color: var(--text) !important;
+  padding-bottom: 6px !important;
+}
+
+/* ── Password eye icon ── */
+.signup-card .MuiIconButton-root {
+  color: var(--muted);
+  transition: color var(--transition);
+}
+
+.signup-card .MuiIconButton-root:hover {
+  color: var(--red);
+  background: var(--red-glow);
+}
+
+/* ── "Register as" label ── */
+.signup-card .MuiFormLabel-root {
+  font-family: var(--font-body) !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  color: var(--label) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Checkbox row wrapper ── */
+.signup-card .MuiFormControlLabel-root {
+  margin-right: 12px;
+  margin-top: 4px;
+}
+
+.signup-card .MuiFormControlLabel-label {
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  color: var(--text) !important;
+}
+
+/* ── Checkbox — unchecked ── */
+.signup-card .MuiCheckbox-root {
+  color: var(--border) !important;
+  padding: 6px;
+  transition: color var(--transition);
+}
+
+/* ── Checkbox — checked ── */
+.signup-card .MuiCheckbox-root.Mui-checked {
+  color: var(--red) !important;
+}
+
+/* ── Checkbox ripple ── */
+.signup-card .MuiCheckbox-root:hover {
+  background-color: var(--red-glow) !important;
+}
+
+/* ── Submit button ── */
+.signup-card .MuiButton-containedSuccess,
+.signup-card .MuiButton-root[type='submit'] {
+  background-color: var(--red) !important;
+  color: #fff !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  border-radius: 8px !important;
+  padding: 11px 0 !important;
+  box-shadow: 0 2px 10px var(--red-glow) !important;
+  transition: background-color var(--transition), box-shadow var(--transition), transform var(--transition) !important;
+}
+
+.signup-card .MuiButton-containedSuccess:hover,
+.signup-card .MuiButton-root[type='submit']:hover {
+  background-color: var(--red-hover) !important;
+  box-shadow: 0 4px 20px rgba(224, 43, 43, 0.32) !important;
+  transform: translateY(-1px);
+}
+
+.signup-card .MuiButton-containedSuccess:active,
+.signup-card .MuiButton-root[type='submit']:active {
+  background-color: var(--red-active) !important;
+  transform: translateY(0);
+}
+
+.signup-card .MuiButton-root.Mui-disabled {
+  background-color: var(--border) !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* ── Responsive tweaks ── */
+@media (max-width: 480px) {
+  .signup-card {
+    padding: 32px 24px 28px;
+    margin: 40px auto 24px;
+  }
+
+  .signup-card .MuiTypography-h5 {
+    font-size: 1.45rem !important;
+  }
+}

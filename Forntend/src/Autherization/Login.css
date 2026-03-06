@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap');
+
+/* ── Root tokens ── */
+:root {
+  --red:        #e02b2b;
+  --red-hover:  #c41f1f;
+  --red-active: #a81a1a;
+  --red-glow:   rgba(224, 43, 43, 0.18);
+
+  --bg:         #f7f5f2;
+  --card:       #ffffff;
+  --border:     #e4e0db;
+  --label:      #8a8480;
+  --text:       #1a1816;
+  --muted:      #b0aba6;
+
+  --radius:     14px;
+  --shadow:     0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 12px 48px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  --font-body:  'DM Sans', sans-serif;
+  --font-head:  'Playfair Display', serif;
+
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Page background ── */
+body {
+  background-color: var(--bg);
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Card wrapper ── */
+.login-card {
+  width: min(380px, calc(100vw - 32px));
+  margin: 60px auto 40px;
+  padding: 40px 36px 36px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition);
+}
+
+.login-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Heading ── */
+.login-card .MuiTypography-h5 {
+  font-family: var(--font-head) !important;
+  font-size: 1.65rem !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+  letter-spacing: -0.01em;
+}
+
+/* ── Alert ── */
+.login-card .MuiAlert-root {
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+}
+
+/* ── Text fields ── */
+.login-card .MuiTextField-root {
+  margin-top: 8px;
+}
+
+.login-card .MuiInput-root::before {
+  border-bottom: 1.5px solid var(--border) !important;
+}
+
+.login-card .MuiInput-root::after {
+  border-bottom: 2px solid var(--red) !important;
+}
+
+.login-card .MuiInputLabel-root {
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  color: var(--label) !important;
+  font-weight: 400;
+}
+
+.login-card .MuiInputLabel-root.Mui-focused {
+  color: var(--red) !important;
+}
+
+.login-card .MuiInputBase-input {
+  font-family: var(--font-body) !important;
+  font-size: 0.9rem !important;
+  color: var(--text) !important;
+  padding-bottom: 6px !important;
+}
+
+/* ── Password eye icon ── */
+.login-card .MuiIconButton-root {
+  color: var(--muted);
+  transition: color var(--transition);
+}
+
+.login-card .MuiIconButton-root:hover {
+  color: var(--red);
+  background: var(--red-glow);
+}
+
+/* ── Role label ── */
+.login-card .MuiFormLabel-root {
+  font-family: var(--font-body) !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  color: var(--label) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Radio group ── */
+.login-card .MuiRadioGroup-root {
+  flex-direction: row;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.login-card .MuiFormControlLabel-root {
+  margin-right: 12px;
+}
+
+.login-card .MuiFormControlLabel-label {
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  color: var(--text) !important;
+}
+
+/* Radio dot — default */
+.login-card .MuiRadio-root {
+  color: var(--border) !important;
+  padding: 6px;
+  transition: color var(--transition);
+}
+
+/* Radio dot — checked */
+.login-card .MuiRadio-root.Mui-checked {
+  color: var(--red) !important;
+}
+
+/* Radio ripple */
+.login-card .MuiRadio-root:hover {
+  background-color: var(--red-glow) !important;
+}
+
+/* ── Submit button ── */
+.login-card .MuiButton-containedSuccess,
+.login-card .MuiButton-root[type='submit'] {
+  background-color: var(--red) !important;
+  color: #fff !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  border-radius: 8px !important;
+  padding: 11px 0 !important;
+  box-shadow: 0 2px 10px var(--red-glow) !important;
+  transition: background-color var(--transition), box-shadow var(--transition), transform var(--transition) !important;
+}
+
+.login-card .MuiButton-containedSuccess:hover,
+.login-card .MuiButton-root[type='submit']:hover {
+  background-color: var(--red-hover) !important;
+  box-shadow: 0 4px 20px rgba(224, 43, 43, 0.32) !important;
+  transform: translateY(-1px);
+}
+
+.login-card .MuiButton-containedSuccess:active,
+.login-card .MuiButton-root[type='submit']:active {
+  background-color: var(--red-active) !important;
+  transform: translateY(0);
+}
+
+.login-card .MuiButton-root.Mui-disabled {
+  background-color: var(--border) !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* ── Divider below role section ── */
+.login-card .MuiFormLabel-root + .MuiFormGroup-root {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Responsive tweaks ── */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 24px 28px;
+    margin: 40px auto 24px;
+  }
+
+  .login-card .MuiTypography-h5 {
+    font-size: 1.45rem !important;
+  }
+
+  .login-card .MuiRadioGroup-root {
+    flex-direction: column;
+    gap: 0;
+  }
+}

@@ -29,7 +29,7 @@ export const signup = async (req, res, next) => {
     });
 
     await sendEmail({
-      to: user.email,
+      to: email,
       subject: "Verify your email - WanderLust",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 480px; margin: auto;">

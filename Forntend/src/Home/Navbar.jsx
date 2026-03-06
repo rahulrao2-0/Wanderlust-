@@ -21,6 +21,7 @@ import { useState } from 'react';
 import Login from '../Autherization/Login.jsx';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../PropertyDetails/AuthContext.jsx';
+import { useEffect } from 'react';
 
 
 
@@ -29,6 +30,15 @@ export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
   const { user, loading, setUser, checkAuth } = useAuth();
+  const [openLogin, setOpenLogin] = useState(false);
+
+  useEffect(()=>{
+    if(user){
+      setOpenLogin(true)
+    }else{
+      setOpenLogin(false)
+    }
+  },[user])
 
 
   // Menu handlers
@@ -80,13 +90,13 @@ export default function Navbar() {
       <h2><i className="fa-regular fa-compass"></i>WanderLust</h2>
 
       <div className='tagDiv'>
-        {user ? (<>
+        { openLogin? (<>
           <a href="/host" onClick={(e) => {
             e.preventDefault();
             navigate("/host");
           }}>Become a Host</a>
         </>) : (<></>)}
-        {!user ? (<>
+        {!openLogin ? (<>
           <a href="/signup" onClick={(e) => {
             e.preventDefault();
             navigate("/signup");
