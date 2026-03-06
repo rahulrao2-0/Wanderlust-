@@ -74,7 +74,7 @@ export default function Header({ User }) {
               e.preventDefault();
               navigate("/addListing");
             }} className='addlisting'>
-              <i className="fa-solid fa-plus" style={{ marginRight: '6px' }}></i>
+              <i className="fa-solid fa-plus" style={{ marginRight: '96px' }}></i>
               Add Listing
             </a>
 
