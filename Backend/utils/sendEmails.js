@@ -3,24 +3,24 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // use an App Password, not your real password
+    user: "raoshabrahul86@gmail.com",
+    pass: "fgfjwqwrtshsmpni", // Gmail App Password
   },
 });
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    await transporter.sendMail({
-      from: `"WanderLust" <${process.env.EMAIL_USER}>`,
+    const info = await transporter.sendMail({
+      from: `"WanderLust" <raoshabrahul86@gmail.com>`,
       to,
       subject,
       html,
     });
+
     console.log("✅ Email sent successfully");
-    return true;
+    console.log("Message ID:", info.messageId);
   } catch (err) {
-    console.error("❌ Email error:", err.message);
-    throw err;
+    console.error("❌ Email error:", err);
   }
 };
 

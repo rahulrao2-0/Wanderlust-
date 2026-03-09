@@ -1,6 +1,6 @@
 
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: "./.env" });
 
 
 import express        from "express";
@@ -44,7 +44,7 @@ const upload = multer({ dest: "uploads/" });
 const app = express();
 
 app.use(cors({
-  origin: ["https://wanderlust-ptk7.vercel.app"],
+  origin: ["http://localhost:5173"],
   credentials: true
 }));
 app.use(express.json());

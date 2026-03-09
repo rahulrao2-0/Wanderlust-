@@ -84,7 +84,7 @@ export const verifyEmail = async (req, res, next) => {
     res.cookie("token", JWTtoken, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
 
@@ -144,7 +144,7 @@ export const login = async (req, res, next) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
 

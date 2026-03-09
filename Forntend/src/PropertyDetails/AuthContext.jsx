@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const res = await fetch("https://wanderlust-cpfz.onrender.com/me", {
+      const res = await fetch("http://localhost:5000/me", {
         method: "GET",
         credentials: "include", // IMPORTANT for cookies
       });
