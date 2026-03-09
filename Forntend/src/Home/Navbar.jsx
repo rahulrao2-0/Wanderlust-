@@ -34,7 +34,7 @@ export default function Navbar() {
   const [loading , setLoading] = useState(false)
 
   useEffect(()=>{
-    if(user){
+    if(user && loading){
       setOpenLogin(true)
     }else{
       setOpenLogin(false)
@@ -91,12 +91,6 @@ export default function Navbar() {
       <h2><i className="fa-regular fa-compass"></i>WanderLust</h2>
 
       <div className='tagDiv'>
-        { openLogin? (<>
-          <a href="/host" onClick={(e) => {
-            e.preventDefault();
-            navigate("/host");
-          }}>Become a Host</a>
-        </>) : (<></>)}
         {!openLogin ? (<>
           <a href="/signup" onClick={(e) => {
             e.preventDefault();
@@ -111,6 +105,10 @@ export default function Navbar() {
             Login
           </a>
         </>) : (<>
+          <a href="/host" onClick={(e) => {
+            e.preventDefault();
+            navigate("/host");
+          }}>Become a Host</a>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Tooltip title="Account settings">
               <IconButton onClick={handleClick} size="small">
