@@ -29,8 +29,9 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
-  const { user, loading, setUser, checkAuth } = useAuth();
+  const { user,  setUser, checkAuth } = useAuth();
   const [openLogin, setOpenLogin] = useState(false);
+  const [loading , setLoading] = useState(false)
 
   useEffect(()=>{
     if(user){
@@ -38,7 +39,7 @@ export default function Navbar() {
     }else{
       setOpenLogin(false)
     }
-  },[user])
+  },[user , loading])
 
 
   // Menu handlers
