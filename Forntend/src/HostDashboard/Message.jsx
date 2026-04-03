@@ -16,7 +16,7 @@ export default function Message() {
     const fetchLatestNotifications = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/notifications/latest",
+          "https://wanderlust-1-s261.onrender.com/api/notifications/latest",
           {
             method: "GET",
             credentials: "include",
@@ -103,7 +103,7 @@ export default function Message() {
     if (nextOpen && unreadCount > 0) {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/notifications/read-all",
+          "https://wanderlust-1-s261.onrender.com/api/notifications/read-all",
           {
             method: "PATCH",
             credentials: "include",

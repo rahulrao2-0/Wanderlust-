@@ -85,7 +85,7 @@ export default function Settings() {
     const confirm = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
     if (confirm) {
       try {
-        const result = await fetch("http://localhost:5000/api/deleteAccount", { method: "DELETE", credentials: "include" });
+        const result = await fetch("https://wanderlust-1-s261.onrender.com/api/deleteAccount", { method: "DELETE", credentials: "include" });
         const res = await result.json();
         if (res) { await checkAuth(); navigate("/"); }
       } catch (err) {

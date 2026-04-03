@@ -26,7 +26,7 @@ export default function Reservations() {
         setError(null);
 
         const res = await fetch(
-          `http://localhost:5000/api/reservations/${hostId}`,
+          `https://wanderlust-1-s261.onrender.com/api/reservations/${hostId}`,
           {
             method: "GET",
             credentials: "include",
