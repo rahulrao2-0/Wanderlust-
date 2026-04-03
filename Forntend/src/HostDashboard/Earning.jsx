@@ -4,15 +4,39 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useEffect,useContext } from "react";
+
 
 export default function Earning() {
     const [timeRange, setTimeRange] = useState("month");
+    const [totalEarnings, setTotalEarnings] = useState(0);  
+    const [growth, setGrowth] = useState(0);
+    const [bookings, setBookings] = useState(0);
+    const[data,setData] = useState("")
 
+
+    useEffect(()=>{
+        const fechData = async()=>{
+            const response = await fetch("http://localhost:5000/api/host/earnings",{
+                method:"GET",
+                credentials:"include",
+                headers:{
+                    "Content-Type":"application/json"}
+            })
+            const data = await response.json();
+            console.log(data)
+            setData(data)
+            setTotalEarnings(data.totalEarnings);
+            // setGrowth(data.growth);
+            setBookings(data.totalBooking);
+        }
+        fechData();
+    },[])
     const earningData = {
         month: {
-            total: 4850,
+            total: data.monthlyEarning,
             percentage: 12.5,
-            bookings: 8,
+            bookings: data.monthlyBookingsCount,
             breakdown: [
                 { label: "Week 1", value: 1200 },   
                 { label: "Week 2", value: 1150 },
@@ -20,22 +44,10 @@ export default function Earning() {
                 { label: "Week 4", value: 1250 },
             ],
         },
-        week: {
-            total: 1285,
-            percentage: 8.2,
-            bookings: 2,
-            breakdown: [
-                { label: "Mon", value: 300 },
-                { label: "Tue", value: 250 },
-                { label: "Wed", value: 280 },
-                { label: "Thu", value: 255 },
-                { label: "Fri", value: 200 },
-            ],
-        },
         year: {
-            total: 58200,
+            total: data.totalEarnings,
             percentage: 23.4,
-            bookings: 96,
+            bookings: data.totalBooking,
             breakdown: [
                 { label: "Q1", value: 14500 },
                 { label: "Q2", value: 15200 },
@@ -64,19 +76,11 @@ export default function Earning() {
                     </div>
                     <div className="statContent">
                         <p className="statLabel">Total Earnings</p>
-                        <p className="statValue">₹{currentData.total.toLocaleString()}</p>
+                        <p className="statValue">₹{totalEarnings}</p>
                     </div>
                 </div>
 
-                <div className="statBox">
-                    <div className="statIcon trending">
-                        <TrendingUpIcon />
-                    </div>
-                    <div className="statContent">
-                        <p className="statLabel">Growth</p>
-                        <p className="statValue">+{currentData.percentage}%</p>
-                    </div>
-                </div>
+                
 
                 <div className="statBox">
                     <div className="statIcon">
@@ -84,18 +88,12 @@ export default function Earning() {
                     </div>
                     <div className="statContent">
                         <p className="statLabel">Bookings</p>
-                        <p className="statValue">{currentData.bookings}</p>
+                        <p className="statValue">{bookings}</p>
                     </div>
                 </div>
             </div>
 
             <div className="timeRangeSelector">
-                <button
-                    className={`timeBtn ${timeRange === "week" ? "active" : ""}`}
-                    onClick={() => setTimeRange("week")}
-                >
-                    Week
-                </button>
                 <button
                     className={`timeBtn ${timeRange === "month" ? "active" : ""}`}
                     onClick={() => setTimeRange("month")}

@@ -60,6 +60,52 @@
     font-size: 1rem;
 }
 
+/* Responsive Design */
+@media (max-width: 900px) {
+    .admin-dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar,
+    .AdminSidebar {
+        width: 100%;
+        min-height: unset;
+        flex-direction: row;
+        padding: 12px 0;
+        overflow-x: auto;
+    }
+
+    .dashboard-main {
+        padding: 16px 4px;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dashboard-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 64px;
+    }
+}
+
+/* Enhanced UI */
+.admin-dashboard {
+    background: linear-gradient(135deg, #eaf1fb 0%, #f4f6fa 100%);
+}
+
+
 .dashboard-actions {
     display: flex;
     align-items: center;

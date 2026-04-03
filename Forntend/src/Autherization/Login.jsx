@@ -70,16 +70,18 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await fetch("https://wanderlust-cpfz.onrender.com/api/auth/login", {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(loginData),
       });
 
       const result = await response.json();
       console.log(result);
-      if(response.status === 401){
+      if (response.status === 401) {
         setError("Invalid credentials. Please try again.");
         setIsSubmitting(false);
         return;

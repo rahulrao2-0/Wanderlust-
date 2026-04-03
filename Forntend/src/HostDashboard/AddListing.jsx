@@ -110,7 +110,7 @@ export default function AddListing() {
     if (!formData.title || !formData.location) return;
 
     const Timer = setTimeout(async () => {
-      const response = await fetch('https://wanderlust-cpfz.onrender.com/api/generateDescription', {
+      const response = await fetch('http://localhost:5000/api/ai/generateDescription', {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -201,7 +201,7 @@ export default function AddListing() {
     console.log(payload);
 
     try {
-      const response = await fetch('https://wanderlust-cpfz.onrender.com/api/addListing', {
+      const response = await fetch('http://localhost:5000/api/addListing', {
         method: 'POST',
         credentials: 'include',
         body: payload,

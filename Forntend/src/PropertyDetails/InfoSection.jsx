@@ -15,6 +15,18 @@ import { useAuth } from "./AuthContext";
 import Map from "./Map";
 import { Rating, TextField } from "@mui/material";
 import Review from "./Review";
+import AiReviewSummary from "./AiReviewSummary";
+
+/* ── Load Razorpay SDK dynamically ── */
+const loadRazorpay = () =>
+  new Promise((resolve) => {
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
 
 export default function InfoSection() {
   const navigate = useNavigate();
@@ -30,7 +42,6 @@ export default function InfoSection() {
   const [review, setReview] = useState("");
   const [isPostingReview, setIsPostingReview] = useState(false);
 
-  // Mobile booking sheet state
   const [showMobileForm, setShowMobileForm] = useState(false);
 
   const userId = user?.user?._id;
@@ -39,7 +50,7 @@ export default function InfoSection() {
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        `https://wanderlust-cpfz.onrender.com/api/reviews/property/${property?._id}`,
+        `http://localhost:5000/api/reviews/property/${property?._id}`,
         {
           method: "GET",
           credentials: "include",
@@ -67,7 +78,7 @@ export default function InfoSection() {
     try {
       const reviewData = { propertyId: property?._id, rating, comment: review };
       const response = await fetch(
-        `https://wanderlust-cpfz.onrender.com/api/reviews/${userId}`,
+        `http://localhost:5000/api/reviews/${userId}`,
         {
           method: "POST",
           credentials: "include",
@@ -77,11 +88,9 @@ export default function InfoSection() {
       );
       const data = await response.json();
       if (data.message) {
-        alert( data.message);
+        alert(data.message);
         return;
       }
-      
-      
     } catch (err) {
       console.error("Error submitting review:", err);
       alert("Failed to submit review. Please try again.");
@@ -105,54 +114,134 @@ export default function InfoSection() {
       alert("Please fill all fields");
       return;
     }
+
+    if (!user) {
+      alert("Please log in to reserve.");
+      navigate("/login");
+      return;
+    }
+
     setIsSubmitting(true);
+
     try {
-      const bookingData = {
-        propertyId: property?._id,
-        checkIn: checkInValue.format("MM-DD-YYYY"),
-        checkOut: checkOutValue.format("MM-DD-YYYY"),
-        guests,
+      // STEP 1 — Calculate nights & amount
+      const checkIn  = checkInValue.format("MM-DD-YYYY");
+      const checkOut = checkOutValue.format("MM-DD-YYYY");
+      const diffTime = new Date(checkOut) - new Date(checkIn);
+      const nights   = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const amount   = nights * property.price;
+
+      // STEP 2 — Create Razorpay order on backend
+      const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount,
+          propertyId: property._id,
+          checkIn,
+          checkOut,
+        }),
+      });
+
+      const order = await orderRes.json();
+
+      if (order.error === "Dates not available") {
+        alert("These dates are already booked. Please choose other dates.");
+        setCheckInValue(null);
+        setCheckOutValue(null);
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!order.id) {
+        alert("Could not initiate payment. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // STEP 3 — Load Razorpay SDK
+      const sdkLoaded = await loadRazorpay();
+      if (!sdkLoaded) {
+        alert("Failed to load payment gateway. Check your internet connection.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // STEP 4 — Open Razorpay checkout modal
+      const options = {
+        key:         import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount:      order.amount,
+        currency:    "INR",
+        name:        "WanderLust",
+        description: `Booking: ${property.title}`,
+        order_id:    order.id,
+        prefill: {
+          name:  user?.user?.name  || "",
+          email: user?.user?.email || "",
+        },
+        theme: { color: "#e53935" },
+
+        handler: async (paymentResponse) => {
+          // STEP 5 — Verify payment + create booking on backend
+          try {
+            const verifyRes = await fetch(
+              "http://localhost:5000/api/payment/verify-and-book",
+              {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_order_id:   paymentResponse.razorpay_order_id,
+                  razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                  razorpay_signature:  paymentResponse.razorpay_signature,
+                  propertyId: property._id,
+                  checkIn,
+                  checkOut,
+                  guests,
+                  userId: user?.user?._id,
+                }),
+              }
+            );
+
+            const result = await verifyRes.json();
+
+            if (result.success) {
+              alert("✅ Payment successful! Your booking is pending host confirmation. Check your email.");
+              setCheckInValue(null);
+              setCheckOutValue(null);
+              setGuests("");
+              setShowMobileForm(false);
+            } else {
+              alert(result.message || "Payment verification failed. Contact support.");
+            }
+          } catch (err) {
+            console.error("Verification error:", err);
+            alert(
+              "Payment done but booking failed. Contact support with payment ID: " +
+              paymentResponse.razorpay_payment_id
+            );
+          } finally {
+            setIsSubmitting(false);
+          }
+        },
+
+        modal: {
+          ondismiss: () => setIsSubmitting(false),
+        },
       };
-      const response = await fetch(
-        `https://wanderlust-cpfz.onrender.com/api/booking/${user.id}`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(bookingData),
-        }
-      );
-      const data = await response.json();
-      if (data.error === "Dates not available") {
-        alert("Booking failed: Choose another Dates");
-        setCheckInValue(null);
-        setCheckOutValue(null);
-        setGuests("");
-        return;
-      } else if (data.error === "Please verify your email to book a property") {
-        alert("Booking failed: " + data.error);
-        navigate("/login");
-        return;
-      }
-      if (data.success) {
-        alert("Booking confirmed!");
-        setCheckInValue(null);
-        setCheckOutValue(null);
-        setGuests("");
-        setShowMobileForm(false);
-      } else {
-        alert("Booking failed: " + (data.message || "Please try again"));
-        navigate("/login");
-      }
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
     } catch (err) {
-      console.error("Network error:", err);
-      alert("Connection error. Please check your internet and try again.");
-    } finally {
+      console.error("Payment flow error:", err);
+      alert("Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
   };
 
-  /* Shared date + guest form fields (used in both desktop card & mobile sheet) */
+  /* Shared date + guest form fields */
   const BookingFields = () => (
     <>
       <label>Check-In</label>
@@ -270,7 +359,7 @@ export default function InfoSection() {
               onClick={submitData}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Reserving..." : "Reserve"}
+              {isSubmitting ? "Processing..." : "Reserve & Pay"}
             </Button>
           </div>
         </div>
@@ -279,9 +368,7 @@ export default function InfoSection() {
       {/* ── Mobile sticky bottom bar ── */}
       <div className="mobileReserveBar">
         <div className="mobileReserveBar__price">
-          <span className="priceAmount">
-            ₹{property?.price || "—"}/night
-          </span>
+          <span className="priceAmount">₹{property?.price || "—"}/night</span>
           <span className="priceLabel">Tap to check availability</span>
         </div>
         <button
@@ -332,11 +419,13 @@ export default function InfoSection() {
                 },
               }}
             >
-              {isSubmitting ? "Reserving..." : "Reserve"}
+              {isSubmitting ? "Processing..." : "Reserve & Pay"}
             </Button>
           </div>
         </>
       )}
+      {/* ── AI Review Summary ── */}
+      <AiReviewSummary />
 
       {/* ── Reviews ── */}
       <div className="ReviewDiv">

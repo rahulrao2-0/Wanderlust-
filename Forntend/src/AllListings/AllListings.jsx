@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Rating from "@mui/material/Rating";
 
 const fetchListings = async () => {
-  const res = await fetch("https://wanderlust-cpfz.onrender.com/api/listings", {
+  const res = await fetch("http://localhost:5000/api/listings", {
     credentials: "include",
   });
 
@@ -70,13 +70,11 @@ export default function AllListings({ searchResults = [] }) {
               </p>
 
               <div className="cardFooter">
-                <Rating
-                  name="read-only"
-                  value={4}
-                  readOnly
-                  size="small"
-                />
-                <span className="reviewCount">(48 reviews)</span>
+                <div className="footer">
+                  <span className="price">₹ {listing.price} / night</span>
+                  <span className="location">{listing.location}</span>
+                </div>
+                
               </div>
             </div>
           </div>

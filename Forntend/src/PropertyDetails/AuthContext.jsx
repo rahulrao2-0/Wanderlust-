@@ -21,14 +21,17 @@ export const AuthProvider = ({ children }) => {
         credentials: "include", // IMPORTANT for cookies
       });
 
+       const data = await res.json();
+       console.log("Auth check response:",  data );
       if (res.ok) {
-        const data = await res.json();
+        
         setUser({
           user: data.user,
           isHost: data.isHost,
           host: data.host,
         }); // { id, username, role }
       } else {
+        
         setUser(null);
       }
     } catch (err) {

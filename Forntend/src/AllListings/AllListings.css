@@ -29,6 +29,7 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+
 .listingCard:hover {
     
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
@@ -106,6 +107,13 @@
     padding-top: 12px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     margin-top: auto;
+}
+.cardFooter .footer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+    align-items: center;
+
 }
 
 .reviewCount {

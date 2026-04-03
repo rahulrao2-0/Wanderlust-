@@ -6,6 +6,7 @@ import Navbar from "./Navbar.jsx";
 import Searchbar from "./Searchbar.jsx";
 import AllListings from "../AllListings/AllListings.jsx";
 import Filterbar from "./Filterbar.jsx";
+import Footer from "../Footer.jsx";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Home() {
@@ -42,6 +43,7 @@ function Home() {
       <Searchbar onSearch={handleSearch} />
       <Filterbar />
       <AllListings searchResults={searchResults} />
+      <Footer />
 
     </div>
   );

@@ -110,17 +110,53 @@ export const reservations = async(req,res)=>{
         to: booking.user.email,
         subject: "Booking Confirmed 🎉",
         html: `
-          <h2>Your booking is confirmed!</h2>
+<div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f9fafb; padding: 20px;">
+  
+  <div style="max-width:500px; margin:auto; background:#ffffff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.08); overflow:hidden;">
+    
+    <!-- Header -->
+    <div style="background:#4F46E5; color:white; padding:16px; text-align:center;">
+      <h2 style="margin:0;">🎉 Booking Confirmed</h2>
+    </div>
 
-          <p><b>Listing:</b> ${booking.listing.title}</p>
-          <p><b>Check In:</b> ${new Date(booking.checkIn).toLocaleDateString()}</p>
-          <p><b>Check Out:</b> ${new Date(booking.checkOut).toLocaleDateString()}</p>
-          <p><b>Guests:</b> ${booking.guests}</p>
-          <p><b>Total Price:</b> ₹${booking.totalPrice}</p>
+    <!-- Body -->
+    <div style="padding:20px;">
+      
+      <p style="font-size:15px; color:#444;">Your booking has been successfully placed.</p>
 
-          <br/>
-          <p>Thank you for booking with us ❤️</p>
-        `,
+      <!-- Booking Info -->
+      <div style="background:#f3f4f6; padding:15px; border-radius:8px; margin:15px 0;">
+        <p><strong>🏠 Listing:</strong> ${booking.listing.title}</p>
+        <p><strong>📅 Check In:</strong> ${new Date(booking.checkIn).toLocaleDateString()}</p>
+        <p><strong>📅 Check Out:</strong> ${new Date(booking.checkOut).toLocaleDateString()}</p>
+        <p><strong>👥 Guests:</strong> ${booking.guests}</p>
+        <p style="font-size:16px;"><strong>💰 Total Price:</strong> ₹${booking.totalPrice}</p>
+      </div>
+
+      <!-- Highlight Message -->
+      <div style="
+        background:#ecfeff;
+        border-left:5px solid #06b6d4;
+        padding:12px;
+        border-radius:6px;
+        color:#0e7490;
+        font-weight:500;
+      ">
+        We recommend contacting your host to coordinate check-in details and ask any questions you may have.  
+      </div>
+
+      <p style="margin-top:15px; color:#555;">Thank you for booking with us ❤️</p>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="background:#f3f4f6; text-align:center; padding:10px; font-size:12px; color:#777;">
+      © ${new Date().getFullYear()} WanderLust
+    </div>
+
+  </div>
+</div>
+`,
       });
     }
     if (status === "cancelled") {
@@ -148,3 +184,32 @@ export const reservations = async(req,res)=>{
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+export const earnings = async(req,res,next)=>{
+    try{
+      const host = await Host.findOne({user:req.user.id})
+      // console.log("host", host);
+
+        const booking = await Booking.find({host:host._id,status:"confirmed"});
+
+        const currentMonth = new Date().getMonth();
+
+       const monthlyBookings = booking.filter(b => {
+        return new Date(b.createdAt).getMonth() === currentMonth;
+       });
+       console.log("monthlyBooking",monthlyBookings)
+       const monthlyEarning = monthlyBookings.reduce((sum,b) => sum + b.totalPrice,0);
+       const monthlyBookingsCount = monthlyBookings.length;
+       console.log("monthlyEarning", monthlyEarning)
+         
+        // console.log(req.user.id)
+        // console.log("booking", booking);
+        const totalBooking = booking.length;
+        const totalEarnings = booking.reduce((sum,b) => sum + b.totalPrice,0);
+        res.status(200).json({totalEarnings, totalBooking ,monthlyBookings , monthlyEarning, monthlyBookingsCount});
+
+    }catch(err){
+        next(new ExpressError(500,"Failed to fetch earnings data"))
+    }
+
+}

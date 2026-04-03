@@ -14,7 +14,7 @@ export default function PropertyDetails() {
   const { id } = useParams();
   const [property, setProperty] = useState("");
   useEffect(() => {
-    fetch(`https://wanderlust-cpfz.onrender.com/api/properties/${propertyId}`)
+    fetch(`http://localhost:5000/api/properties/${propertyId}`)
       .then(res => res.json())
       .then(data => setProperty(data));
   }, [propertyId]);

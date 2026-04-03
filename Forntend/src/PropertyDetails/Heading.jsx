@@ -16,17 +16,9 @@ export default function HeadingBar() {
         style={{ textTransform: "capitalize" }}
       >
         <div className="propertyName">{property.title}</div>
-        <p className="location"><i class="fa-regular fa-heart"></i>{property.location}</p>
+        <p className="location"><i className="fa-regular fa-heart"></i>{property.location}</p>
       </div>
 
-      <div className="ratingDiv">
-        <Rating
-          name="read-only"
-          value={property.rating || 0}
-          readOnly
-        />
-        <span>{property.rating} / 5</span>
-      </div>
     </div>
   );
 }

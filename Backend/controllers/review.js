@@ -1,5 +1,8 @@
 import Review from "../models/review.js";
-
+import Listing from "../models/listing.js";
+import ExpressError from "../ExpressError.js";
+import booking from "../models/booking.js";
+import Booking from "../models/booking.js";
 const createReview = async (req, res) => {  
      
      const { userId } = req.params;
@@ -12,7 +15,10 @@ const createReview = async (req, res) => {
             rating,
             comment
         });
+        const listing = await Listing.findById(propertyId);
+        listing.reviews.push(newReview._id);
         await newReview.save();
+        await listing.save();
         res.status(201).json({ message: "Review created successfully" });
     } catch (error) {
         console.error("Error creating review:", error);
@@ -31,5 +37,7 @@ const getReviewsForListing = async (req, res) => {
         res.status(500).json({ message: "Failed to fetch reviews" });
     }
 };
+
+
 
 export { createReview, getReviewsForListing };

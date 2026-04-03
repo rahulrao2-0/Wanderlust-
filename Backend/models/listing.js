@@ -123,7 +123,18 @@ const listingSchema = new mongoose.Schema(
       type: [Number],
       required: true
     }
-    }
+    },
+    reviews:[{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Review"
+    }],
+    aiSummary: {
+    summary:   { type: String, default: null },
+    tags:      { type: Map, of: String },
+    positives: [String],
+    concerns:  [String],
+    generatedAt: { type: Date, default: null }, // to regenerate after new reviews
+   },
   },
   { timestamps: true }
 );

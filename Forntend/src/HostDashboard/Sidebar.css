@@ -1,11 +1,28 @@
-/* components/Sidebar/Sidebar.css */
-/* Host sidebar should be white */
+/* Sidebar.css */
+
+.host-dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f7f7f7;
+}
+
+.sidebar-wrapper {
+  width: 260px;
+  flex-shrink: 0;          /* never shrink */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: #fff;
+  border-right: 1px solid #f0f0f0;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
 .sidebar {
   background-color: #fff !important;
   border-radius: 12px;
   padding: 8px 0;
-  position: sticky;
-  top: 20px;
   color: #495057 !important;
 }
 
@@ -48,28 +65,49 @@
 
 .sidebar-item.active .sidebar-text .MuiListItemText-primary {
   font-weight: 600;
-  /* color: #2c3e50; */
 }
 
-/* Airbnb logo style for first item */
 .sidebar-item:first-child.active .sidebar-icon {
   color: #ff385c;
 }
 
+/* ── Content area — fills remaining space to the right ── */
+.host-dashboard-content {
+  flex: 1;
+  min-width: 0;            /* prevents grid blowout */
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* ── Responsive ── */
 @media (max-width: 800px) {
-  .sidebar {
+  .host-dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar-wrapper {
+    width: 100%;
+    height: auto;
     position: relative;
-    top: 0;
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 8px 0;
   }
 
   .sidebar-list {
     display: flex;
     overflow-x: auto;
     padding: 0 8px;
+    gap: 4px;
   }
 
   .sidebar-item {
     min-width: fit-content;
     white-space: nowrap;
+    margin: 4px 0;
+  }
+
+  .host-dashboard-content {
+    padding: 16px;
   }
 }

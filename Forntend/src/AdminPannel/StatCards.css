@@ -40,3 +40,58 @@
 .total-bookings {
     border-top: 4px solid #8e44ad;
 }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .dashboard-stats {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .stat-card {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .stat-title {
+        font-size: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dashboard-stats {
+        gap: 32px;
+        margin-bottom: 48px;
+    }
+
+    .stat-card {
+        padding: 32px;
+        font-size: 1.1rem;
+    }
+
+    .stat-title {
+        font-size: 1.2rem;
+    }
+
+    .stat-value {
+        font-size: 2.4rem;
+    }
+}
+
+/* Enhanced UI */
+.stat-card {
+    box-shadow: 0 2px 8px rgba(35, 78, 140, 0.06);
+    border: 1px solid #e0e6ed;
+    background: linear-gradient(135deg, #f4f6fa 0%, #eaf1fb 100%);
+    transition: box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    box-shadow: 0 6px 24px rgba(35, 78, 140, 0.12);
+}
+}

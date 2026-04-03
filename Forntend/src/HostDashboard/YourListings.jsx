@@ -13,7 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const fetchlistings = async () => {
   const res = await fetch(
-    "https://wanderlust-cpfz.onrender.com/api/host/yourListings",
+    "http://localhost:5000/api/host/yourListings",
     {
       method: "GET",
       credentials: "include",
@@ -26,7 +26,7 @@ const fetchlistings = async () => {
   return result.listings;
 };
 
-export default function YourListings() {
+export default function YourListings({setActiveView}) {
   const queryClient = useQueryClient();
 
   const {
@@ -39,6 +39,10 @@ export default function YourListings() {
     staleTime: 0,              // ⭐ always consider old
     refetchOnWindowFocus: true,
   });
+  const handleViewAllListings =()=>{
+    setActiveView("listings")
+    connsole.log("View All Listings clicked")
+  }
 
   // ⭐ Optional: auto sync whenever component mounts
   React.useEffect(() => {
@@ -55,12 +59,16 @@ export default function YourListings() {
           Your Listings
         </Typography>
 
-        <Box className="view-all-link">
-          <Typography variant="body2" className="link-text">
-            View All Listings
-          </Typography>
-          <ChevronRightIcon className="chevron-icon" />
-        </Box>
+        <Box
+       className="view-all-link"
+      onClick={() => handleViewAllListings()}
+      sx={{ cursor: "pointer" }}
+     >
+      <Typography variant="body2" className="link-text">
+     View All Listings
+     </Typography>
+    <ChevronRightIcon className="chevron-icon" />
+    </Box>
       </Box>
 
       <Box className="listings-grid">

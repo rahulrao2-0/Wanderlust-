@@ -9,7 +9,7 @@ export default function Searchbar({ onSearch }) {
     if (!query) return; // Guard: don't search if query is empty
     const Timer = setTimeout(async () => {
 
-      const result = await fetch(`https://wanderlust-cpfz.onrender.com/api/search?query=${query}`, { method: "GET", credentials: "include" })
+      const result = await fetch(`http://localhost:5000/api/search?query=${query}`, { method: "GET", credentials: "include" })
       const res = await result.json();
       console.log("Search API response:", res.results);
       if (result.status === 404 || res.results.length === 0) {

@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect} from "react";
 import { useAuth } from "../PropertyDetails/AuthContext";
 import "./Reservations.css";
+import socket from "../socket.js";
+
 
 export default function Reservations() {
   const { user } = useAuth();
@@ -9,6 +12,10 @@ export default function Reservations() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [bookingNotification, setBookingNotification] = useState(null);
+
+
+  
 
   useEffect(() => {
     if (!hostId) return;
@@ -19,7 +26,7 @@ export default function Reservations() {
         setError(null);
 
         const res = await fetch(
-          `https://wanderlust-cpfz.onrender.com/api/reservations/${hostId}`,
+          `http://localhost:5000/api/reservations/${hostId}`,
           {
             method: "GET",
             credentials: "include",
@@ -44,7 +51,7 @@ export default function Reservations() {
   // ⭐ update booking status
   const updateStatus = async (id, status) => {
     try {
-      await fetch(`https://wanderlust-cpfz.onrender.com/api/reservations/${id}`, {
+      await fetch(`http://localhost:5000/api/reservations/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -64,6 +71,7 @@ export default function Reservations() {
   if (error) return <p>{error}</p>;
 
   return (
+    <>
     <div className="reservations-wrapper">
       <h2 className="page-title">Reservations</h2>
       <div className="allcards">
@@ -130,5 +138,6 @@ export default function Reservations() {
         )}
       </div>
     </div>
+    </>
   );
 }

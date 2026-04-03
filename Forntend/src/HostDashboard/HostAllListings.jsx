@@ -15,7 +15,7 @@ export default function HostAllListings() {
 
   // 🔹 Fetch Host Listings
   const fetchListings = async () => {
-    const response = await fetch("https://wanderlust-cpfz.onrender.com/api/HostAllListings", {
+    const response = await fetch("http://localhost:5000/api/HostAllListings", {
       credentials: "include",
     });
 
@@ -31,7 +31,7 @@ export default function HostAllListings() {
 
   // 🔹 Delete Listing API
   const deleteListing = async (listingId) => {
-    const res = await fetch(`https://wanderlust-cpfz.onrender.com/api/delete/${listingId}`, {
+    const res = await fetch(`http://localhost:5000/api/delete/${listingId}`, {
       method: "DELETE",
       credentials: "include",
     });

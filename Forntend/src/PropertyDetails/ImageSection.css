@@ -4,7 +4,7 @@
     /* border: 2px solid; */
     display: flex;
     flex-direction: row;
-    margin-top: 0.5rem;
+    /* margin-top: 0.5rem; */
 }
 .bigImage{
     height: 100%;

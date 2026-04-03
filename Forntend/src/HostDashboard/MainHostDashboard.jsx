@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import Header from "./Header.jsx";
 import Sidebar from "./Sidebar.jsx";
@@ -18,6 +18,9 @@ export default function MainHostDashboard() {
 
   // ⭐ which page to show
   const [activeView, setActiveView] = useState("dashboard");
+  const [bookingNotification, setBookingNotification] = useState("");
+
+ 
 
   if (loading) return <p>Loading...</p>;
   if (!user) return <Navigate to="/login" replace />;
@@ -33,16 +36,31 @@ export default function MainHostDashboard() {
             {/* pass function */}
             <Sidebar setActiveView={setActiveView} />
           </Grid>
+          
 
           {/* Main Area */}
           <Grid item xs={12} md={9.5} lg={10}>
+            {bookingNotification && (
+              <Box
+                sx={{
+                  mb: 2,
+                  p: 1.5,
+                  borderRadius: 2,
+                  backgroundColor: "#e8f5e9",
+                  color: "#1b5e20",
+                  fontWeight: 600,
+                }}
+              >
+                {bookingNotification}
+              </Box>
+            )}
 
             {/* 🟢 DASHBOARD DEFAULT */}
             {activeView === "dashboard" && (
               <>
                 <Grid container spacing={3} mb={3}>
                   <Grid item xs={12} lg={7}>
-                    <YourListings />
+                    <YourListings  setActiveView={setActiveView}/>
                   </Grid>
                   
                 </Grid>

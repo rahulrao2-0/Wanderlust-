@@ -83,8 +83,8 @@ export const verifyEmail = async (req, res, next) => {
 
     res.cookie("token", JWTtoken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: false,
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
 
@@ -100,6 +100,8 @@ export const verifyEmail = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
+  console.log("Login attempt with body:", req.body);
+  console.log("login api hit")
   try {
     const { email, password, role } = req.body;
 
@@ -143,8 +145,8 @@ export const login = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: false,
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
 
@@ -165,6 +167,7 @@ export const login = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
+  console.log("Logout attempt");
   res.clearCookie("token");
     res.json({ message: "Logged out successfully" });
 };

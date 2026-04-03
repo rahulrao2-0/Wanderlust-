@@ -51,7 +51,7 @@ export default function Host() {
     e.preventDefault();
     console.log("Host Data:", formData);
     try {
-      const result = await fetch("https://wanderlust-cpfz.onrender.com/api/host", {
+      const result = await fetch("http://localhost:5000/api/host", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

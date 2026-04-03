@@ -1,26 +1,34 @@
-import nodemailer from "nodemailer";
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "raoshabrahul86@gmail.com",
-    pass: "fgfjwqwrtshsmpni", // Gmail App Password
-  },
-});
-
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"WanderLust" <raoshabrahul86@gmail.com>`,
-      to,
-      subject,
-      html,
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": process.env.BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "WanderLust",
+          email: process.env.BREVO_SENDER_EMAIL, // must be verified in Brevo
+        },
+        to: [{ email: to }],
+        subject: subject,
+        htmlContent: html,
+      }),
     });
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("❌ Brevo Error:", data);
+      throw new Error("Email sending failed");
+    }
+
     console.log("✅ Email sent successfully");
-    console.log("Message ID:", info.messageId);
+    console.log("Response:", data);
+
   } catch (err) {
-    console.error("❌ Email error:", err);
+    console.error("❌ Email error:", err.message);
   }
 };
 

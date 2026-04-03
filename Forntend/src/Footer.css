@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500&display=swap');
+
+/* ─── CSS Variables ─────────────────────────────────────── */
+:root {
+  --wl-crimson:    #c0392b;
+  --wl-deep-red:   #7b1c1c;
+  --wl-ember:      #e74c3c;
+  --wl-cream:      #f5ede6;
+  --wl-warm-white: #fdf6f0;
+  --wl-gold:       #d4a04a;
+  --wl-charcoal:   #1a0a0a;
+}
+
+
+.wl-footer {
+  background: var(--wl-charcoal);
+  color: var(--wl-cream);
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  overflow: hidden;
+  /* height: 500px; */
+}
+
+.wl-footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(139, 0, 0, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 20%, rgba(192, 57, 43, 0.12) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ─── Top Gradient Border ───────────────────────────────── */
+.wl-footer-top-border {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--wl-crimson),
+    var(--wl-gold),
+    var(--wl-crimson),
+    transparent
+  );
+}
+
+/* ─── Animated Compass Rose ─────────────────────────────── */
+.wl-compass-bg {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  height: 420px;
+  opacity: 0.04;
+  animation: wl-spin 60s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes wl-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* ─── Main Grid ─────────────────────────────────────────── */
+.wl-footer-main {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 70px 48px 48px;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+@media (max-width: 900px) {
+  .wl-footer-main {
+    grid-template-columns: 1fr 1fr;
+    padding: 48px 24px 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  .wl-footer-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Brand Column ──────────────────────────────────────── */
+.wl-brand-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--wl-warm-white);
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.wl-brand-logo span {
+  color: var(--wl-crimson);
+}
+
+.wl-brand-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--wl-gold);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.wl-brand-desc {
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: rgba(245, 237, 230, 0.55);
+  font-weight: 300;
+  max-width: 260px;
+  margin-bottom: 32px;
+}
+
+/* ─── Newsletter ────────────────────────────────────────── */
+.wl-newsletter-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--wl-gold);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.wl-newsletter-form {
+  display: flex;
+  border: 1px solid rgba(192, 57, 43, 0.4);
+}
+
+.wl-newsletter-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  outline: none;
+  padding: 11px 14px;
+  color: var(--wl-cream);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  flex: 1;
+  letter-spacing: 0.5px;
+}
+
+.wl-newsletter-input::placeholder {
+  color: rgba(245, 237, 230, 0.3);
+}
+
+.wl-newsletter-btn {
+  background: var(--wl-crimson);
+  border: none;
+  padding: 11px 18px;
+  color: white;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.wl-newsletter-btn:hover {
+  background: var(--wl-ember);
+}
+
+/* ─── Award Badge ───────────────────────────────────────── */
+.wl-award-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(192, 57, 43, 0.12);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  padding: 6px 12px;
+  margin-top: 28px;
+  font-size: 0.66rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--wl-gold);
+  font-weight: 500;
+}
+
+.wl-award-star {
+  color: var(--wl-gold);
+  font-size: 0.7rem;
+}
+
+/* ─── Link Columns ──────────────────────────────────────── */
+.wl-col-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--wl-warm-white);
+  margin-bottom: 22px;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.wl-col-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  background: var(--wl-crimson);
+}
+
+.wl-col-heading--sm {
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+}
+
+.wl-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wl-footer-links li a {
+  text-decoration: none;
+  color: rgba(245, 237, 230, 0.5);
+  font-size: 0.78rem;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  transition: color 0.2s, padding-left 0.2s;
+  display: inline-block;
+  position: relative;
+}
+
+.wl-footer-links li a::before {
+  content: '—';
+  position: absolute;
+  left: -18px;
+  opacity: 0;
+  color: var(--wl-crimson);
+  transition: opacity 0.2s, left 0.2s;
+  font-size: 0.7rem;
+}
+
+.wl-footer-links li a:hover {
+  color: var(--wl-cream);
+  padding-left: 22px;
+}
+
+.wl-footer-links li a:hover::before {
+  opacity: 1;
+  left: 0;
+}
+
+/* ─── Destinations ──────────────────────────────────────── */
+.wl-destinations {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wl-dest-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(245, 237, 230, 0.5);
+  font-size: 0.78rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 3px 0;
+}
+
+.wl-dest-item:hover {
+  color: var(--wl-cream);
+}
+
+.wl-dest-flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ─── Contact / Pin Rows ────────────────────────────────── */
+.wl-pin-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.wl-pin {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--wl-crimson);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.wl-contact-item {
+  font-size: 0.76rem;
+  color: rgba(245, 237, 230, 0.45);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.wl-company-section {
+  margin-top: 28px;
+}
+
+/* ─── Divider ───────────────────────────────────────────── */
+.wl-footer-divider {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+  border-top: 1px solid rgba(192, 57, 43, 0.2);
+}
+
+/* ─── Bottom Bar ────────────────────────────────────────── */
+.wl-footer-bottom {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 48px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wl-copyright {
+  font-size: 0.72rem;
+  color: rgba(245, 237, 230, 0.3);
+  letter-spacing: 0.5px;
+  font-weight: 300;
+}
+
+.wl-copyright strong {
+  color: var(--wl-crimson);
+  font-weight: 500;
+}
+
+/* ─── Social Icons ──────────────────────────────────────── */
+.wl-social-links {
+  display: flex;
+  gap: 12px;
+}
+
+.wl-social-link {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(192, 57, 43, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  text-decoration: none;
+  color: rgba(245, 237, 230, 0.5);
+}
+
+.wl-social-link:hover {
+  background: var(--wl-crimson);
+  border-color: var(--wl-crimson);
+  color: white;
+}
+
+/* ─── Legal Links ───────────────────────────────────────── */
+.wl-legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.wl-legal-links a {
+  font-size: 0.68rem;
+  color: rgba(245, 237, 230, 0.28);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.wl-legal-links a:hover {
+  color: var(--wl-cream);
+}
+
+@media (max-width: 560px) {
+  .wl-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 24px 28px;
+  }
+
+  .wl-footer-divider {
+    padding: 0 24px;
+  }
+}

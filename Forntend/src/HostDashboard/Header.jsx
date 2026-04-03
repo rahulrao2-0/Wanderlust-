@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { useAuth } from '../PropertyDetails/AuthContext';
+import Message from './Message';
 export default function Header({ User }) {
   console.log(User)
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Header({ User }) {
   }
   const logout = async () => {
     try {
-      const result = await fetch("https://wanderlust-cpfz.onrender.com/api/auth/logout", {
+      const result = await fetch("http://localhost:5000/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -68,6 +69,7 @@ export default function Header({ User }) {
               Let's manage your listings and reservations.
             </Typography>
           </Box>
+          <Message />
 
           <Box className="header-right">
             <a href="/addListing" onClick={(e) => {

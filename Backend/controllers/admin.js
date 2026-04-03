@@ -13,7 +13,9 @@ const getAdminStats = async (req, res) => {
     createdAt: { $gte: last30Days }
     }).sort({ createdAt: -1 });
     const AllListings = await Listing.find();
+    console.log("All Listings in getAdminStats:", AllListings);
     const AllUsers = await User.find();
+    console.log("All Users in getAdminStats:", AllUsers);
     const AllBookings = await Booking.find();
     const totalUsers = await User.countDocuments();
     const totalListings = await Listing.countDocuments();

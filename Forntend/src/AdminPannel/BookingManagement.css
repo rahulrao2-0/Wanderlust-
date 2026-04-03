@@ -32,3 +32,49 @@
     margin-bottom: 12px;
     font-size: 1.1rem;
 }
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .booking-management {
+        padding: 10px;
+    }
+
+    .panel-title {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .booking-stats {
+        flex-direction: column;
+        gap: 6px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .booking-management {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 32px 48px;
+    }
+
+    .panel-title {
+        font-size: 1.5rem;
+    }
+
+    .booking-stats {
+        font-size: 1.1rem;
+    }
+}
+
+/* Enhanced UI */
+.booking-management {
+    border: 1px solid #e0e6ed;
+    background: linear-gradient(135deg, #f4f6fa 0%, #eaf1fb 100%);
+    box-shadow: 0 2px 8px rgba(35, 78, 140, 0.04);
+}
+
+.panel-title {
+    letter-spacing: 0.01em;
+}
+}

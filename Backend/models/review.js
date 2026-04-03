@@ -20,8 +20,9 @@ const reviewSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: true  ,
-    }
-})
+    },
+    
+},{ timestamps: true })
 
 const Review = mongoose.models.Review || mongoose.model("Review", reviewSchema);
 

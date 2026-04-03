@@ -7,7 +7,7 @@ export default function ReviewCard({ review }) {
     <>
     <div className="reviewBox">
       {review.map((rev)=>(
-      <div className="reviewCard">
+      <div className="reviewCard" key={review._id}>
       <div className="reviewHeader">
         <div className="reviewAvatar">
           {rev?.user?.name?.[0]?.toUpperCase() || "U"}

@@ -20,6 +20,7 @@ import { authMiddleware } from "./middleware/authValidate.js";
 import User           from "./models/user.js";
 import Host           from "./models/host.js";
 import Listing        from "./models/listing.js";
+import paymentRoutes from "./routes/payment.js";
 
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 import mbxTilesets from "@mapbox/mapbox-sdk/services/tilesets.js";
@@ -27,6 +28,13 @@ import mapboxSdk from "@mapbox/mapbox-sdk";
 import ExpressError from "./ExpressError.js";
 import OpenAI from "openai";
 import reviewRoutes from "./routes/review.js";
+import aiRoutes from "./routes/aiRoutes.js";
+import notificationRoutes from "./routes/notifications.js";
+
+import { initSocket } from "./socket.js";
+
+
+
 const mapboxClient = mapboxSdk({
   accessToken: process.env.MAP_TOKEN,
 });
@@ -44,7 +52,7 @@ const upload = multer({ dest: "uploads/" });
 const app = express();
 
 app.use(cors({
-  origin: ["https://wanderlust-9yxw.vercel.app"],
+  origin: ["http://localhost:5173"],
   credentials: true
 }));
 app.use(express.json());
@@ -53,13 +61,26 @@ app.use(express.urlencoded({ extended: true }));
 
 
 mongoose
+  .connect("mongodb+srv://yadavrahul81135_db_user:aqHAMg1mJ32yrqKZ@cluster0.5so9v6p.mongodb.net/?appName=Cluster0", {
+    tls: true,
+    tlsAllowInvalidCertificates: true,
+  })
+  .then(() => {
+    console.log("MongoDB connected");
 
-  .connect("mongodb+srv://yadavrahul81135_db_user:aqHAMg1mJ32yrqKZ@cluster0.5so9v6p.mongodb.net/?appName=Cluster0")
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+    const server = app.listen(5000, () => {
+      console.log("Server running on http://localhost:5000");
+    });
+
+    initSocket(server);
+  })
+  .catch((err) => console.error("MongoDB connection error:", err));
+   
+    
 
 
 app.get("/me", authMiddleware, async (req, res) => {
+  console.log("Authenticated user ID:", req.user.id);
   const user = await User.findById(req.user.id).select(
     "_id name email role isVerified"
   );
@@ -234,23 +255,7 @@ app.delete("/api/deleteAccount", authMiddleware, async (req, res) => {
 });
 
 ///OpenAI API
-app.post("/api/generateDescription", async (req, res) => {
-  // const { title, location } = req.body;
-  const input = `${req.body.title} ${req.body.location}`;
-  console.log("Generating description for:", input);  
-  const client = new OpenAI({
-    api_key: process.env.OPENAI_API_KEY
-  });
-  const response = await client.responses.create({
-    model:'gpt-4o-mini',
-    input:`write luxury and modern description for a listing whose ${input} in less than 20 words`
-  })
 
-  const result= response.output[0].content[0].text.trim();
-  console.log("Generated description:", result);
-  res.json({ description: result });
-
-});
 
 
 app.use("/api/auth", authRoutes);
@@ -259,7 +264,9 @@ app.use("/api",      bookingRoutes);
 app.use("/api",      hostRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api", reviewRoutes);
-
+app.use("/api/payment", paymentRoutes);
+app.use("/api/ai",aiRoutes);
+app.use("/api", notificationRoutes);
 
 app.use((err, req, res, next) => {
   console.error("Global error:", err);
@@ -270,4 +277,3 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(5000, () => console.log("Server running on http://localhost:5000"));
