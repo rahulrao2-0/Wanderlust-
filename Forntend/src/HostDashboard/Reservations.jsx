@@ -51,7 +51,7 @@ export default function Reservations() {
   // ⭐ update booking status
   const updateStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:5000/api/reservations/${id}`, {
+      await fetch(`https://wanderlust-1-s261.onrender.com/api/reservations/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
