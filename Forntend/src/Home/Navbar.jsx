@@ -57,7 +57,7 @@ export default function Navbar() {
 
   const logout = async () => {
     try {
-      const result = await fetch("http://localhost:5000/api/auth/logout", {
+      const result = await fetch("https://wanderlust-1-s261.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });

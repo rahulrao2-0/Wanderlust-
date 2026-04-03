@@ -32,15 +32,15 @@ export default function AdminDashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/admin/stats", {
+                const response = await fetch("https://wanderlust-1-s261.onrender.com/api/admin/stats", {
                     credentials: "include",
                 });
 
                 const data = await response.json();
-                 if(data.message ==="Access denied"){
+                if (data.message === "Access denied") {
                     console.error("Access denied: Admin privileges required");
                     navigate("/login");
-                    return; 
+                    return;
                 }
 
                 console.log("Stats data:", data);

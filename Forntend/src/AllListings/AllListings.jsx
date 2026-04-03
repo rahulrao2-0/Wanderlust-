@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Rating from "@mui/material/Rating";
 
 const fetchListings = async () => {
-  const res = await fetch("http://localhost:5000/api/listings", {
+  const res = await fetch("https://wanderlust-1-s261.onrender.com/api/listings", {
     credentials: "include",
   });
 
@@ -74,7 +74,7 @@ export default function AllListings({ searchResults = [] }) {
                   <span className="price">₹ {listing.price} / night</span>
                   <span className="location">{listing.location}</span>
                 </div>
-                
+
               </div>
             </div>
           </div>

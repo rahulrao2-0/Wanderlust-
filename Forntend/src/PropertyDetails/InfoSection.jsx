@@ -50,7 +50,7 @@ export default function InfoSection() {
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/reviews/property/${property?._id}`,
+        `https://wanderlust-1-s261.onrender.com/api/reviews/property/${property?._id}`,
         {
           method: "GET",
           credentials: "include",
@@ -78,7 +78,7 @@ export default function InfoSection() {
     try {
       const reviewData = { propertyId: property?._id, rating, comment: review };
       const response = await fetch(
-        `http://localhost:5000/api/reviews/${userId}`,
+        `https://wanderlust-1-s261.onrender.com/api/reviews/${userId}`,
         {
           method: "POST",
           credentials: "include",
@@ -132,7 +132,7 @@ export default function InfoSection() {
       const amount   = nights * property.price;
 
       // STEP 2 — Create Razorpay order on backend
-      const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+      const orderRes = await fetch("https://wanderlust-1-s261.onrender.com/api/payment/create-order", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -186,7 +186,7 @@ export default function InfoSection() {
           // STEP 5 — Verify payment + create booking on backend
           try {
             const verifyRes = await fetch(
-              "http://localhost:5000/api/payment/verify-and-book",
+              "https://wanderlust-1-s261.onrender.com/api/payment/verify-and-book",
               {
                 method: "POST",
                 credentials: "include",

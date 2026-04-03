@@ -27,7 +27,7 @@ const OTP = ({ email, onResend }) => {
         try {
             console.log("Attempting to verify OTP:", otp);
             const res = await fetch(
-                `http://localhost:5000/api/auth/verify-email/${otp}`,
+                `https://wanderlust-1-s261.onrender.com/api/auth/verify-email/${otp}`,
                 {
                     method: "POST",
                     credentials: "include"

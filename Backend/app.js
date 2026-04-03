@@ -52,7 +52,7 @@ const upload = multer({ dest: "uploads/" });
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: ["https://wanderlust-9yxw.vercel.app"],
   credentials: true
 }));
 app.use(express.json());
@@ -69,7 +69,7 @@ mongoose
     console.log("MongoDB connected");
 
     const server = app.listen(5000, () => {
-      console.log("Server running on http://localhost:5000");
+      console.log("Server running on https://wanderlust-1-s261.onrender.com");
     });
 
     initSocket(server);

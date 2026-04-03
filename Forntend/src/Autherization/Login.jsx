@@ -70,7 +70,7 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("https://wanderlust-1-s261.onrender.com/api/auth/login", {
         method: "POST",
         credentials: "include",
         headers: {

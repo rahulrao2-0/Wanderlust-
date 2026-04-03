@@ -28,7 +28,7 @@ export default function AiReviewSummary() {
       setError(false);
       try {
         const res = await fetch(
-          `http://localhost:5000/api/ai/ReviewSummary/${property._id}`,
+          `https://wanderlust-1-s261.onrender.com/api/ai/ReviewSummary/${property._id}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

@@ -4,24 +4,25 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useEffect,useContext } from "react";
+import { useEffect, useContext } from "react";
 
 
 export default function Earning() {
     const [timeRange, setTimeRange] = useState("month");
-    const [totalEarnings, setTotalEarnings] = useState(0);  
+    const [totalEarnings, setTotalEarnings] = useState(0);
     const [growth, setGrowth] = useState(0);
     const [bookings, setBookings] = useState(0);
-    const[data,setData] = useState("")
+    const [data, setData] = useState("")
 
 
-    useEffect(()=>{
-        const fechData = async()=>{
-            const response = await fetch("http://localhost:5000/api/host/earnings",{
-                method:"GET",
-                credentials:"include",
-                headers:{
-                    "Content-Type":"application/json"}
+    useEffect(() => {
+        const fechData = async () => {
+            const response = await fetch("https://wanderlust-1-s261.onrender.com/api/host/earnings", {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             })
             const data = await response.json();
             console.log(data)
@@ -31,14 +32,14 @@ export default function Earning() {
             setBookings(data.totalBooking);
         }
         fechData();
-    },[])
+    }, [])
     const earningData = {
         month: {
             total: data.monthlyEarning,
             percentage: 12.5,
             bookings: data.monthlyBookingsCount,
             breakdown: [
-                { label: "Week 1", value: 1200 },   
+                { label: "Week 1", value: 1200 },
                 { label: "Week 2", value: 1150 },
                 { label: "Week 3", value: 1250 },
                 { label: "Week 4", value: 1250 },
@@ -80,7 +81,7 @@ export default function Earning() {
                     </div>
                 </div>
 
-                
+
 
                 <div className="statBox">
                     <div className="statIcon">

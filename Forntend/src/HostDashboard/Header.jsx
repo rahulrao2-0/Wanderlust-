@@ -41,7 +41,7 @@ export default function Header({ User }) {
   }
   const logout = async () => {
     try {
-      const result = await fetch("http://localhost:5000/api/auth/logout", {
+      const result = await fetch("https://wanderlust-1-s261.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -80,7 +80,7 @@ export default function Header({ User }) {
               Add Listing
             </a>
 
-            
+
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tooltip title="Account settings">
