@@ -168,6 +168,12 @@ export const login = async (req, res, next) => {
 
 export const logout = (req, res) => {
   console.log("Logout attempt");
-  res.clearCookie("token");
-    res.json({ message: "Logged out successfully" });
+
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,        // ⚠️ must match
+    sameSite: "None",    // ⚠️ must match
+  });
+
+  res.json({ message: "Logged out successfully" });
 };
