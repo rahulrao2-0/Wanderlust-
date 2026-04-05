@@ -1,36 +1,61 @@
-import "./Searchbar.css"
-import { useEffect, useState } from "react";
+import "./Searchbar.css";
+import { useEffect, useState, useRef } from "react";
 
 export default function Searchbar({ onSearch }) {
-  const [country, setCountry] = useState("");
   const [query, setQuery] = useState("");
+  const cardRef = useRef();
 
+  // 🔍 API search (same logic)
   useEffect(() => {
-    if (!query) return; // Guard: don't search if query is empty
-    const Timer = setTimeout(async () => {
+    if (!query) return;
 
-      const result = await fetch(`https://wanderlust-1-s261.onrender.com/api/search?query=${query}`, { method: "GET", credentials: "include" })
+    const Timer = setTimeout(async () => {
+      const result = await fetch(
+        `https://wanderlust-1-s261.onrender.com/api/search?query=${query}`,
+        { method: "GET", credentials: "include" }
+      );
+
       const res = await result.json();
-      console.log("Search API response:", res.results);
-      if (result.status === 404 || res.results.length === 0) {
-        console.log("No results found:", res);
-      }
+
       if (result.ok) {
         onSearch(res.results);
       }
-    }, 500)
+    }, 500);
+
     return () => clearTimeout(Timer);
   }, [query]);
 
+  // 🔥 3D Mouse Move Effect
+  const handleMouseMove = (e) => {
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const midX = rect.width / 2;
+    const midY = rect.height / 2;
+
+    const rotateX = ((y - midY) / midY) * 8;
+    const rotateY = ((x - midX) / midX) * 8;
+
+    cardRef.current.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const resetTransform = () => {
+    cardRef.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+  };
 
   return (
     <div className="searchbar">
-
-      {/* Search Input */}
-      <div className="input-group">
+      <div
+        className="input-group"
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={resetTransform}
+      >
         <span className="input-icon">
           <i className="fa-solid fa-magnifying-glass"></i>
         </span>
+
         <input
           type="text"
           placeholder="Search place, destination, or location..."
