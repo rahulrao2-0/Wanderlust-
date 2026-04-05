@@ -19,7 +19,7 @@ function ListingSkeletonCard() {
   return (
     <div className="listingCard">
       <div className="cardImageWrapper">
-        <Skeleton height={220} width={300} borderRadius={12} />
+        <Skeleton height={220} width={400} display="flex" flexWrap="wrap" borderRadius={12} />
       </div>
       
 
