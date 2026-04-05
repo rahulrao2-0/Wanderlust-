@@ -68,7 +68,7 @@
 
 .input-group:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(231, 76, 60, 0.3)  ;
+  border: 2px solid #e74c3c;
   transform: translateY(-2px);
 }
 
