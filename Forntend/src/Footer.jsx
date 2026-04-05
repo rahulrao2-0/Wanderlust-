@@ -88,9 +88,9 @@ const exploreLinks = [
 const companyLinks = ["About Us", "Careers", "Press", "Blog"];
 
 const contactInfo = [
-  { text: "42 Explorer's Lane,\nMumbai, India 400001" },
+  { text: "42 Explorer's Lane,Bhopal, India 400001" },
   { text: "hello@wanderlust.in" },
-  { text: "+91 98765 43210" },
+  { text: "+91 7497019505" },
   { text: "Mon–Sat, 9am – 7pm IST" },
 ];
 
@@ -121,7 +121,7 @@ export default function Footer() {
             <input
               className="wl-newsletter-input"
               type="email"
-              placeholder="your@email.com"
+              placeholder="yadavrahul@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -177,16 +177,6 @@ export default function Footer() {
             </div>
           ))}
 
-          <div className="wl-company-section">
-            <div className="wl-col-heading wl-col-heading--sm">Company</div>
-            <ul className="wl-footer-links">
-              {companyLinks.map((link) => (
-                <li key={link}>
-                  <a href="#">{link}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </div>
 
