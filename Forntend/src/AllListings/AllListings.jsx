@@ -1,7 +1,6 @@
 import "./AllListings.css";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import Rating from "@mui/material/Rating";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -19,9 +18,8 @@ function ListingSkeletonCard() {
   return (
     <div className="listingCard">
       <div className="cardImageWrapper">
-        <Skeleton height={220} width={400} display="flex" flexWrap="wrap" borderRadius={12} />
+        <Skeleton height={220} width={400} borderRadius={12} />
       </div>
-      
 
       <div className="cardContent">
         <h3 className="listingTitle">
@@ -56,8 +54,7 @@ export default function AllListings({ searchResults = [] }) {
     queryKey: ["listings"],
     queryFn: fetchListings,
     staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: true,
-    refetchInterval: 10000,
+    refetchOnWindowFocus: false,
   });
 
   const listings = searchResults.length > 0 ? searchResults : fetchedListings;
@@ -88,6 +85,8 @@ export default function AllListings({ searchResults = [] }) {
                     src={listing.image?.[0]?.url}
                     alt={listing.title}
                     className="cardImage"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="cardOverlay"></div>
                 </div>
